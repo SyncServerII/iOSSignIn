@@ -10,8 +10,11 @@ import SwiftUI
 import iOSSignIn
 
 struct ContentView: View {
+    let padding:CGFloat = 50
     var body: some View {
-        SignInContainer()
+        VStack {
+            SignInContainer()
+        }.padding(EdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding))
     }
 }
 

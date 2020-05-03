@@ -8,9 +8,25 @@ struct SignInRow: View {
     var body: some View {
         VStack {
             if self.visible {
-                Text(name)
+                LabelView(text: name)
             }
         }
+    }
+}
+
+// https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
+struct LabelView: UIViewRepresentable {
+    let text: String
+    
+    func makeUIView(context: Context) -> UIView {
+        let label = UILabel()
+        label.text = text
+        label.sizeToFit()
+        label.backgroundColor = .green
+        return label
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
     }
 }
 
