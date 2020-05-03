@@ -6,6 +6,9 @@ struct TodoItem: Identifiable {
 }
 
 public struct SignInContainer: View {
+    public init() {
+    }
+    
     let todoItems: [TodoItem] = [
         TodoItem(action: "Writing a blogpost about SwiftUI"),
         TodoItem(action: "Walk with the dog"),
