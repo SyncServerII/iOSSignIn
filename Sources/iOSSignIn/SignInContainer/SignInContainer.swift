@@ -5,13 +5,13 @@ struct TodoItem: Identifiable {
     var action: String
 }
 
-struct SignInContainer: View {
+public struct SignInContainer: View {
     let todoItems: [TodoItem] = [
         TodoItem(action: "Writing a blogpost about SwiftUI"),
         TodoItem(action: "Walk with the dog"),
         TodoItem(action: "Drink a beer")]
         
-    var body: some View {
+    public var body: some View {
         List(todoItems) { todoItem in
             SignInRow(visible: true, name: todoItem.action)
         }

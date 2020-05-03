@@ -9,6 +9,15 @@
           "revision": "cdb8c71fb7f22b4f1af05c21246c12c1aa49f89e",
           "version": "6.5.2"
         }
+      },
+      {
+        "package": "iOSSignIn",
+        "repositoryURL": "https://github.com/SyncServerII/iOSSignIn.git",
+        "state": {
+          "branch": "master",
+          "revision": "44467005841227fd3ae2191ccfe15cd9243f0b70",
+          "version": null
+        }
       }
     ]
   },

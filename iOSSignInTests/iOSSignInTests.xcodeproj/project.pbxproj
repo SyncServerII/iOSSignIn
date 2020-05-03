@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		83607C3D245E80A700A7D3A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83607C3C245E80A700A7D3A8 /* Assets.xcassets */; };
 		83607C40245E80A700A7D3A8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83607C3F245E80A700A7D3A8 /* Preview Assets.xcassets */; };
 		83607C43245E80A700A7D3A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83607C41245E80A700A7D3A8 /* LaunchScreen.storyboard */; };
+		83607C4F245E904000A7D3A8 /* iOSSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 83607C4E245E904000A7D3A8 /* iOSSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +25,6 @@
 		83607C3F245E80A700A7D3A8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83607C42245E80A700A7D3A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83607C44245E80A700A7D3A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		83607C4C245E82CB00A7D3A8 /* iOSSignIn */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOSSignIn; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83607C4F245E904000A7D3A8 /* iOSSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +58,6 @@
 		83607C35245E80A400A7D3A8 /* iOSSignInTests */ = {
 			isa = PBXGroup;
 			children = (
-				83607C4C245E82CB00A7D3A8 /* iOSSignIn */,
 				83607C36245E80A400A7D3A8 /* AppDelegate.swift */,
 				83607C38245E80A400A7D3A8 /* SceneDelegate.swift */,
 				83607C3A245E80A400A7D3A8 /* ContentView.swift */,
@@ -93,6 +93,9 @@
 			dependencies = (
 			);
 			name = iOSSignInTests;
+			packageProductDependencies = (
+				83607C4E245E904000A7D3A8 /* iOSSignIn */,
+			);
 			productName = iOSSignInTests;
 			productReference = 83607C33245E80A400A7D3A8 /* iOSSignInTests.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +124,9 @@
 				Base,
 			);
 			mainGroup = 83607C2A245E80A400A7D3A8;
+			packageReferences = (
+				83607C4D245E904000A7D3A8 /* XCRemoteSwiftPackageReference "iOSSignIn" */,
+			);
 			productRefGroup = 83607C34245E80A400A7D3A8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -344,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		83607C4D245E904000A7D3A8 /* XCRemoteSwiftPackageReference "iOSSignIn" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SyncServerII/iOSSignIn.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		83607C4E245E904000A7D3A8 /* iOSSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 83607C4D245E904000A7D3A8 /* XCRemoteSwiftPackageReference "iOSSignIn" */;
+			productName = iOSSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83607C2B245E80A400A7D3A8 /* Project object */;
 }
