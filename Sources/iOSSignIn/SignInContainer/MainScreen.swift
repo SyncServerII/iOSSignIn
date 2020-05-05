@@ -1,7 +1,7 @@
 import SwiftUI
 
 public struct MainScreen: View {
-    var body: some View {
+    public var body: some View {
         VStack {
             Button(action: {
                 // TODO
