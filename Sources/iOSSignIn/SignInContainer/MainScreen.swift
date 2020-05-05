@@ -1,6 +1,10 @@
 import SwiftUI
 
 public struct MainScreen: View {
+    // A public init is necessary for making the View publically visible!
+    public init() {
+    }
+    
     public var body: some View {
         VStack {
             Button(action: {
