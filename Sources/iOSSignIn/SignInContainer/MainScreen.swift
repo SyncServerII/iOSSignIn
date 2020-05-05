@@ -1,5 +1,6 @@
 import SwiftUI
 
+// Shows the Sign-in and Create Account buttons.
 public struct MainScreen: View {
     // A public init is necessary for making the View publically visible!
     public init() {
@@ -13,12 +14,16 @@ public struct MainScreen: View {
                 Text("Sign-in")
             }
             
+            Spacer().frame(minHeight: 10, maxHeight: 50)
+            
             Button(action: {
                 // TODO
             }) {
                 Text("Create Account")
             }
         }
+        // I needed this in order to have the VStack expand out further than minimum.
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

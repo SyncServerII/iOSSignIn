@@ -7,13 +7,12 @@ struct SignInRow: View {
     
     var body: some View {
         VStack {
-            if self.visible {
-                LabelView(text: name)
-            }
+            Text(name)
         }
     }
 }
 
+// Will be using this to hold a UIView based sign-in button
 // https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
 struct LabelView: UIViewRepresentable {
     let text: String

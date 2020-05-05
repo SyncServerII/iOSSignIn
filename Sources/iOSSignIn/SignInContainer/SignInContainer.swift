@@ -1,28 +1,37 @@
 import SwiftUI
-
-struct TodoItem: Identifiable {
-    var id = UUID()
-    var action: String
-}
+import Foundation
 
 public struct SignInContainer: View {
-    public init() {
+    @ObservedObject var model: SignInModel
+    let padding:CGFloat = 50
+
+    public init(model: SignInModel) {
+        self.model = model
     }
-    
-    let todoItems: [TodoItem] = [
-        TodoItem(action: "Writing a blogpost about SwiftUI"),
-        TodoItem(action: "Walk with the dog"),
-        TodoItem(action: "Drink a beer")]
         
     public var body: some View {
-        List(todoItems) { todoItem in
-            SignInRow(visible: true, name: todoItem.action)
+        NavBar(model: model, contents:
+            AnyView(
+                VStack {
+                    self.containedView()
+                }
+                .border(Color(UIColor.lightGray))
+            ),
+        action: {
+            print("Back")
+        })
+    }
+    
+    func containedView() -> AnyView {
+        switch model.screenState {
+            case .main: return AnyView(MainScreen())
+            case .list: return AnyView(SignInList())
         }
     }
 }
 
 struct SignInContainer_Previews: PreviewProvider {
     static var previews: some View {
-        SignInContainer()
+        SignInContainer(model: SignInModel())
     }
 }
