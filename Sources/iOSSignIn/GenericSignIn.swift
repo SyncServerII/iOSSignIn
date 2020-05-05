@@ -1,31 +1,16 @@
 import Foundation
 import UIKit
-
-public enum UserType : String {
-    // user doesn't own cloud storage (e.g., Facebook user)
-    // aka. social user or social account
-    case sharing
-    
-    // user owns cloud storage (e.g., Google user)
-    case owning
-
-    // Maximum length of a UserType as a string.
-    public static var maxStringLength: Int {
-        return 20
-    }
-}
+import ServerShared
 
 public protocol GenericSignIn : class {
     /// Some services, e.g., Facebook, are only suitable for sharing users-- i.e., they don't have cloud storage.
     var userType:UserType { get }
     
     /// For owning userType's, this gives the specific cloud storage type. For sharing userType's, this is nil.
-    var cloudStorageType: String? {get}
+    var cloudStorageType: CloudStorageType? {get}
 
     var delegate:GenericSignInDelegate? {get set}
-    
-    var managerDelegate:SignInManagerDelegate! {get set}
-    
+        
     /// `userSignedIn`, when true, indicates that the user was signed-in with this GenericSignIn last time, and not signed out.
     func appLaunchSetup(userSignedIn: Bool, withLaunchOptions options:[UIApplication.LaunchOptionsKey : Any]?)
     

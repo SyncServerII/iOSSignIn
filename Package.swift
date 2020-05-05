@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
     name: "iOSSignIn",
     platforms: [
+        // This package uses SwiftUI-- only available starting with iOS 13.
         .iOS(.v13),
     ],
     products: [
@@ -21,8 +22,7 @@ let package = Package(
     // Conditional dependencies available in Swift 5.3:
     // https://github.com/apple/swift-evolution/blob/master/proposals/0273-swiftpm-conditional-target-dependencies.md
     dependencies: [
-        .package(url: "https://github.com/facebook/facebook-ios-sdk.git", .upToNextMajor(from: "6.5.0")),
-        
+        .package(path: "../ServerShared"),
         // 5/1/20; Can't import SwiftyDropbox as a swift package:
         // https://github.com/dropbox/SwiftyDropbox/issues/252
         // .package(url: "https://github.com/dropbox/SwiftyDropbox.git", .upToNextMajor(from: "5.1.0")),
@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "iOSSignIn",
             dependencies: [
-                "FacebookLogin"
+                "ServerShared",
             ]),
         .testTarget(
             name: "iOSSignInTests",

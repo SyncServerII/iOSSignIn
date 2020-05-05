@@ -13,7 +13,8 @@ struct ContentView: View {
     let padding:CGFloat = 50
     var body: some View {
         VStack {
-            SignInContainer()
+            //SignInContainer()
+            MainScreen()
         }.padding(EdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding))
     }
 }
