@@ -22,7 +22,9 @@ let package = Package(
     // Conditional dependencies available in Swift 5.3:
     // https://github.com/apple/swift-evolution/blob/master/proposals/0273-swiftpm-conditional-target-dependencies.md
     dependencies: [
-        .package(path: "../ServerShared"),
+        .package(url: "https://github.com/SyncServerII/ServerShared.git", .branch("master")),
+        //.package(path: "../ServerShared"),
+        
         // 5/1/20; Can't import SwiftyDropbox as a swift package:
         // https://github.com/dropbox/SwiftyDropbox/issues/252
         // .package(url: "https://github.com/dropbox/SwiftyDropbox.git", .upToNextMajor(from: "5.1.0")),

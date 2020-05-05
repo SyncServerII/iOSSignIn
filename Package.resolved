@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ServerShared",
+        "repositoryURL": "https://github.com/SyncServerII/ServerShared.git",
+        "state": {
+          "branch": "master",
+          "revision": "0180e2e40290ab02fea5c969404de54e09f99612",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
