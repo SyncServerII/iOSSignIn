@@ -10,7 +10,7 @@ public struct SignInContainer: View {
     }
         
     public var body: some View {
-        NavBar(model: model, contents:
+        OptionalNavBar(model: model, contents:
             AnyView(
                 VStack {
                     self.containedView()

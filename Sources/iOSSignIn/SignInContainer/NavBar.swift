@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-public struct NavBar: View {
+public struct OptionalNavBar: View {
     let contents: AnyView
     let model: SignInModel
     let action:()->()
@@ -13,23 +13,51 @@ public struct NavBar: View {
     }
     
     public var body: some View {
-        if model.showNavBar {
+        if model.navBarOptions != .none {
             return AnyView(
                 NavigationView {
                     contents
-                    .navigationBarTitle(Text(model.navBarTitle), displayMode: .inline)
-                    .navigationBarItems(leading:
-                        Button(action: {
-                            self.action()
-                        }) {
-                           Image(systemName: "chevron.left.circle")
-                        }
-                    )
+                    .optionalNavigationBarTitle(model: model)
+                    .optionalNavigationBarButton(model: model, action: action)
                 }
             )
         }
         else {
             return contents
+        }
+    }
+}
+
+// Adapted extensions from https://www.hackingwithswift.com/books/ios-swiftui/custom-modifiers
+extension View {
+    func optionalNavigationBarTitle(model: SignInModel) -> some View {
+        if model.navBarOptions.contains(.title) {
+            return AnyView(
+                self.navigationBarTitle(Text(model.navBarTitle), displayMode: .inline)
+            )
+        }
+        else {
+            return AnyView(self)
+        }
+    }
+    
+    func optionalNavigationBarButton(model: SignInModel, action: @escaping ()->()) -> some View {
+        if model.navBarOptions.contains(.button) {
+            return AnyView(
+                self.navigationBarItems(leading:
+                    Button(action: {
+                        action()
+                    }) {
+                        Image(systemName: "chevron.left.circle")
+                    }
+                )
+            )
+        }
+        else {
+            // Just returning `self` here doesn't cause the nav bar button to be removed.
+            return AnyView(
+                self.navigationBarItems(leading: EmptyView())
+            )
         }
     }
 }
