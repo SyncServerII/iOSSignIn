@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MainScreen: View {
+public struct MainScreen: View {
     var body: some View {
         VStack {
             Button(action: {
