@@ -14,7 +14,9 @@ struct MainScreen: View {
     public var body: some View {
         VStack(spacing: 0) {
             Button(action: {
-                self.delegate?.mainScreenSignInButtonTapped()
+                withAnimation(.easeInOut) {
+                    self.delegate?.mainScreenSignInButtonTapped()
+                }
             }) {
                 Text("Sign-in")
             }
@@ -22,7 +24,9 @@ struct MainScreen: View {
             Spacer().frame(minHeight: 10, maxHeight: 50)
             
             Button(action: {
-                self.delegate?.mainScreenCreateAccountButtonTapped()
+                withAnimation(.easeInOut) {
+                    self.delegate?.mainScreenCreateAccountButtonTapped()
+                }
             }) {
                 Text("Create Account")
             }

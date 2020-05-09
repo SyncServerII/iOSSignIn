@@ -1,3 +1,4 @@
+import SwiftUI
 
 public class SignInController {
     public let model:SignInModel
@@ -19,8 +20,10 @@ public class SignInController {
 extension SignInController: SignInDelegate {
     public func signInButtonTapped(name: String) {
         if singleSignIn {
-            model.screenState = .main
-            model.navBarOptions = .none
+            withAnimation(.easeInOut) {
+                model.screenState = .main
+                model.navBarOptions = .none
+            }
         }
         else {
             model.currentSignIns = allSignIns.filter{ $0.sortingName == name }

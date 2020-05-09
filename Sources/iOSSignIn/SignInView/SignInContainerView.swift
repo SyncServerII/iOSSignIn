@@ -22,12 +22,16 @@ public struct SignInContainerView: View {
                     backButton:
                         NavBarButton(hidden: !model.navBarOptions.contains(.backButton),
                         action: {
-                            self.delegate?.backButtonTapped()
+                            withAnimation(.easeInOut) {
+                                self.delegate?.backButtonTapped()
+                            }
                         }),
                     infoButton:
                         NavBarButton(hidden: !model.navBarOptions.contains(.infoButton),
                         action: {
-                            self.delegate?.infoButtonTapped()
+                            withAnimation(.easeInOut) {
+                                self.delegate?.infoButtonTapped()
+                            }
                         }))
                         
                 Container {
