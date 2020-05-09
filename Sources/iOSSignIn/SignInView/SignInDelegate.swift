@@ -4,6 +4,6 @@ public protocol SignInDelegate: AnyObject {
     func mainScreenCreateAccountButtonTapped()
     func backButtonTapped()
     func infoButtonTapped()
-    func signInButtonTapped(name: String)
+    func signInButtonTapped(signInName: String)
     func helpInfo() -> (title: String, message: String)
 }

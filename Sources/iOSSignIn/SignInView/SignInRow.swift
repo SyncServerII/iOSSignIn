@@ -26,6 +26,6 @@ struct ButtonView: UIViewRepresentable {
 
 struct SignInRow_Previews: PreviewProvider {
     static var previews: some View {
-        SignInRow(description: SignInDescription(sortingName: "Google", userType: .owning, button: UIView()))
+        SignInRow(description: SignInDescription(signInName: "Google", userType: .owning, button: UIView()))
     }
 }
