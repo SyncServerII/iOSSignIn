@@ -44,13 +44,9 @@ public struct SignInContainerView: View {
                 MainScreen(model: model, delegate: delegate)
             )
                 
-        case .list:
-            guard let signIns = delegate?.signInDescriptions() else {
-                return AnyView(EmptyView())
-            }
-            
+        case .list:            
             return AnyView(
-                SignInList(signIns: signIns)
+                SignInList(signIns: model.currentSignIns)
             )
         }
     }

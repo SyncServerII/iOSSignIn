@@ -19,6 +19,7 @@ public class SignInModel: ObservableObject {
     public init() {
     }
     
+    @Published public var currentSignIns = [SignInDescription]()
     @Published public var screenState: ScreenState = .main
     @Published public var navBarOptions: NavBarOption = .title
     @Published public var navBarTitle: String = "Sign into Existing Account"

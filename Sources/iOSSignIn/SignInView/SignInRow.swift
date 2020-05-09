@@ -6,22 +6,18 @@ struct SignInRow: View {
     
     var body: some View {
         VStack {
-            Text(description.sortingName)
+            ButtonView(view: description.button)
         }
     }
 }
 
 // Will be using this to hold a UIView based sign-in button
 // https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
-struct LabelView: UIViewRepresentable {
-    let text: String
+struct ButtonView: UIViewRepresentable {
+    let view: UIView
     
     func makeUIView(context: Context) -> UIView {
-        let label = UILabel()
-        label.text = text
-        label.sizeToFit()
-        label.backgroundColor = .green
-        return label
+        return view
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
