@@ -18,6 +18,13 @@ public class SignInController {
 }
 
 extension SignInController: SignInDelegate {
+    public func helpInfo() -> (title: String, message: String) {
+        return (
+            title: "Help",
+            message: "Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type."
+        )
+    }
+    
     public func signInButtonTapped(name: String) {
         if singleSignIn {
             withAnimation(.easeInOut) {
@@ -32,6 +39,7 @@ extension SignInController: SignInDelegate {
     }
     
     public func infoButtonTapped() {
+        model.showHelpInfo.toggle()
     }
     
     public func mainScreenIsDisplayed() {

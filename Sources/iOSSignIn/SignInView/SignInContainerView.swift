@@ -18,7 +18,7 @@ public struct SignInContainerView: View {
                 self.containedView()
             }
             else {
-                NavigationBar(title: "Title with lots of text that might wrap to a second line.", borderColor: .clear,
+                NavigationBar(title: model.navBarTitle, borderColor: .clear,
                     backButton:
                         NavBarButton(hidden: !model.navBarOptions.contains(.backButton),
                         action: {
@@ -36,6 +36,12 @@ public struct SignInContainerView: View {
                         
                 Container {
                     self.containedView()
+                }
+                .alert(isPresented: $model.showHelpInfo) {
+                    let text = delegate.helpInfo()
+                    return Alert(title: Text(text.title),
+                        message: Text(text.message),
+                        dismissButton: .default(Text("OK")))
                 }
             }
         }

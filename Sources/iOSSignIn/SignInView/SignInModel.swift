@@ -23,4 +23,5 @@ public class SignInModel: ObservableObject {
     @Published public var screenState: ScreenState = .main
     @Published public var navBarOptions: NavBarOption = .title
     @Published public var navBarTitle: String = "Sign into Existing Account"
+    @Published public var showHelpInfo: Bool = false
 }
