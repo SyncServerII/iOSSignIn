@@ -2,12 +2,11 @@
 import SwiftUI
 
 struct SignInRow: View {
-    let visible: Bool
-    let name: String
+    let description: SignInDescription
     
     var body: some View {
         VStack {
-            Text(name)
+            Text(description.sortingName)
         }
     }
 }
@@ -31,6 +30,6 @@ struct LabelView: UIViewRepresentable {
 
 struct SignInRow_Previews: PreviewProvider {
     static var previews: some View {
-        SignInRow(visible: false, name: "Foo")
+        SignInRow(description: SignInDescription(sortingName: "Google", userType: .owning, button: UIView()))
     }
 }

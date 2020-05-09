@@ -1,15 +1,20 @@
 import SwiftUI
 
 // Shows the Sign-in and Create Account buttons.
-public struct MainScreen: View {
+struct MainScreen: View {
+    @ObservedObject var model:SignInModel
+    weak var delegate: SignInDelegate!
+    
     // A public init is necessary for making the View publically visible!
-    public init() {
+    public init(model:SignInModel, delegate: SignInDelegate?) {
+        self.model = model
+        self.delegate = delegate
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Button(action: {
-                // TODO
+                self.delegate?.mainScreenSignInButtonTapped()
             }) {
                 Text("Sign-in")
             }
@@ -17,19 +22,22 @@ public struct MainScreen: View {
             Spacer().frame(minHeight: 10, maxHeight: 50)
             
             Button(action: {
-                // TODO
+                self.delegate?.mainScreenCreateAccountButtonTapped()
             }) {
                 Text("Create Account")
             }
         }
         // I needed this in order to have the VStack expand out further than minimum.
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear() {
+            self.delegate?.mainScreenIsDisplayed()
+        }
     }
 }
 
 struct MainScreen_Previews: PreviewProvider {
     static var previews: some View {
-        MainScreen()
+        MainScreen(model: SignInModel(), delegate: nil)
     }
 }
 

@@ -10,9 +10,10 @@ public class SignInModel: ObservableObject {
         }
         
         public static let none:NavBarOption = []
-        public static let button = NavBarOption(rawValue: 1 << 0)
-        public static let title = NavBarOption(rawValue: 1 << 1)
-        public static let all:NavBarOption = [.button, .title]
+        public static let backButton = NavBarOption(rawValue: 1 << 0)
+        public static let infoButton = NavBarOption(rawValue: 1 << 1)
+        public static let title = NavBarOption(rawValue: 1 << 2)
+        public static let all:NavBarOption = [.backButton, .infoButton, .title]
     }
     
     public init() {
