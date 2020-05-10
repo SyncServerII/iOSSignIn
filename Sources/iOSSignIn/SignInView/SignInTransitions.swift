@@ -1,4 +1,5 @@
-public protocol SignInTransitions {
+
+protocol SignInTransitions {
     func signInStarted(_ signIn: GenericSignIn)
     func signInCancelled(_ signIn: GenericSignIn)
     func signInCompleted(_ signIn: GenericSignIn)

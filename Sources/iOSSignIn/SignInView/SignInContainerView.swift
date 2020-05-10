@@ -49,21 +49,23 @@ struct SignInContainerView: View {
     }
     
     func containedView() -> AnyView {
-        switch model.screenState {
-        case .main:
-            return AnyView(
-                MainScreen(model: model, delegate: delegate)
-            )
-                
-        case .list:            
-            return AnyView(
-                SignInList(signIns: model.currentSignIns)
-            )
+        withAnimation(.easeInOut) {
+            switch model.screenState {
+            case .main:
+                return AnyView(
+                    MainScreen(model: model, delegate: delegate)
+                )
+                    
+            case .list:
+                return AnyView(
+                    SignInList(signIns: model.currentSignIns)
+                )
+            }
         }
     }
 }
 
-struct Container<Content: View>: View {
+private struct Container<Content: View>: View {
     let content: () -> Content
     var body: some View {
         // Seem to need the GeometryReader so that the container fills the remaining space, independent of its contents.

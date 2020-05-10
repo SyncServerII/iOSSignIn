@@ -1,7 +1,7 @@
 import SwiftUI
 
 class SignInController {
-    let configuration: SignInConfiguration
+    let configuration: UIConfiguration
     let helpTitle = "Help"
     let helpMessage = "Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type."
     
@@ -16,7 +16,7 @@ class SignInController {
     let allSignIns: [SignInDescription]
     
     init(signIns: [SignInDescription],
-        configuration: SignInConfiguration) {
+        configuration: UIConfiguration) {
         self.configuration = configuration
         
         allSignIns = signIns.sorted(by: { (s1, s2) -> Bool in
@@ -111,12 +111,8 @@ extension SignInController: SignInTransitions {
         model.navBarTitle = navBarTitle
     }
     
-    func userIsSignedOut(_ signIn: GenericSignIn) {
-        // User has tapped button when there is a single one. They want to sign out.
-        
-        withAnimation(.easeInOut) {
-            model.screenState = .main
-            model.navBarOptions = .none
-        }
+    func userIsSignedOut(_ signIn: GenericSignIn) {        
+        model.screenState = .main
+        model.navBarOptions = .none
     }
 }

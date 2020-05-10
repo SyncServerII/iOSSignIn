@@ -55,8 +55,6 @@ public class SignInManager : NSObject {
     static var currentSignInName0 = try! PersistentValue<String>(name: "SignInManager.currentSignIn", storage: .userDefaults)
     
     static var currentSignInName = try! PersistentValue<String>(name: "SignInManager.currentSignIn", storage: .file)
-
-    public static let session = SignInManager()
     
     public class SignInStateChanged: SelectorTargets {
         public var selectorTargets = [(target: NSObject, action: Selector)]()
@@ -67,9 +65,10 @@ public class SignInManager : NSObject {
     
     public fileprivate(set) var lastStateChangeSignedUserIn = false
     
-    public var transitions:SignInTransitions!
+    private let transitions:SignInTransitions
     
-    private override init() {
+    init(transitions:SignInTransitions) {
+        self.transitions = transitions
         super.init()
 /*
         signInStateChanged.resetTargets!()
@@ -199,7 +198,7 @@ extension SignInManager: GenericSignInDelegate {
     }
     
     public func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials) {
-        currentSignIn // = credentials
+        //currentSignIn // = credentials
     }
     
     public func signInCompleted(_ signIn: GenericSignIn, autoSignIn: Bool) {
