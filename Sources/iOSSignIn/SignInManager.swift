@@ -67,6 +67,8 @@ public class SignInManager : NSObject {
     
     public fileprivate(set) var lastStateChangeSignedUserIn = false
     
+    public var transitions:SignInTransitions!
+    
     private override init() {
         super.init()
 /*
@@ -89,44 +91,17 @@ public class SignInManager : NSObject {
 */
     }
     
-    fileprivate var alternativeSignIns = [GenericSignIn]()
-
-/*
-    // Pass userType of nil for both sharing and owning.
-    public func getSignIns(`for` userType: UserType?) -> [GenericSignIn]  {
-        var result = [GenericSignIn]()
-        
-        for signIn in alternativeSignIns {
-            switch userType {
-            case .none:
-                result += [signIn]
-            case .some(.sharing):
-                // Owning user types can also be sharing, i.e., it doesn't matter what the signIn.userType is when the ask is for sharing sign ins.
-                result += [signIn]
-            case .some(.owning):
-                // But purely sharing user types (e.g., Facebook) cannot be owning.
-                if signIn.userType == .owning {
-                    result += [signIn]
-                }
-            }
-        }
-        
-        return result
-    }
-*/
+    private(set) var allSignIns = [GenericSignIn]()
     
     /// Set this to establish the current SignIn mechanism in use in the app.
     public var currentSignIn:GenericSignIn? {
         didSet {
-            /*
             if currentSignIn == nil {
-                SyncServerUser.session.creds = nil
-                SignInManager.currentSignInName.value = nil
+                Self.currentSignInName.value = nil
             }
             else {
-                SignInManager.currentSignInName.value = stringNameForSignIn(currentSignIn!)
+                Self.currentSignInName.value = stringNameForSignIn(currentSignIn!)
             }
-            */
         }
     }
     
@@ -140,19 +115,19 @@ public class SignInManager : NSObject {
     
     /// A shorthand-- because it's often used.
     public var userIsSignedIn:Bool {
-        return currentSignIn != nil && currentSignIn!.userIsSignedIn
+        return currentSignIn?.userIsSignedIn ?? false
     }
     
     /// At app launch, you must set up all the SignIn's that you'll be presenting to the user. This will call their `appLaunchSetup` method.
     public func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) {
-/*
+
         // Make sure we don't already have an instance of this signIn
         let name = stringNameForSignIn(signIn)
-        let result = alternativeSignIns.filter({stringNameForSignIn($0) == name})
+        let result = allSignIns.filter({stringNameForSignIn($0) == name})
         assert(result.count == 0)
         
-        alternativeSignIns.append(signIn)
-        signIn.managerDelegate = self
+        allSignIns.append(signIn)
+        signIn.delegate = self
         
         func userSignedIn(withSignInName name: String) -> Bool {
             return SignInManager.currentSignInName.value == name
@@ -166,13 +141,12 @@ public class SignInManager : NSObject {
         if userSignedIn(withSignInName: name) {
             currentSignIn = signIn
         }
-*/
     }
     
     /// Based on the currently active signin method, this will call the corresponding method on that class.
     public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-/*
-        for signIn in alternativeSignIns {
+
+        for signIn in allSignIns {
             if SignInManager.currentSignInName.value == stringNameForSignIn(signIn) {
                 return signIn.application(app, open: url, options: options)
             }
@@ -180,7 +154,6 @@ public class SignInManager : NSObject {
         
         // 10/1/17; Up until today, I had this assert here. For some reason, I was assuming that if I got a `open url` call, the user *had* to be signed in. But this is incorrect. For example, I could get a call for a sharing invitation.
         // assert(false)
-*/
         return false
     }
 }
@@ -216,3 +189,24 @@ extension SignInManager : SignInManagerDelegate {
 }
 */
 
+extension SignInManager: GenericSignInDelegate {
+    public func signInStarted(_ signIn: GenericSignIn) {
+        transitions.signInStarted(signIn)
+    }
+    
+    public func signInCancelled(_ signIn: GenericSignIn) {
+        transitions.signInCancelled(signIn)
+    }
+    
+    public func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials) {
+        currentSignIn // = credentials
+    }
+    
+    public func signInCompleted(_ signIn: GenericSignIn, autoSignIn: Bool) {
+        transitions.signInCompleted(signIn)
+    }
+    
+    public func userIsSignedOut(_ signIn: GenericSignIn) {
+        transitions.userIsSignedOut(signIn)
+    }
+}

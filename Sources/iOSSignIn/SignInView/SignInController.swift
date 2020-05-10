@@ -66,7 +66,7 @@ extension SignInController: SignInDelegate {
 }
 
 extension SignInController: SignInTransitions {
-    func signInStarted(_ signInName: String) {
+    func signInStarted(_ signIn: GenericSignIn) {
         // Transitional state. User has tapped sign in button -- they want to create an account or to sign into an existing account.
         
         let navBarTitle: String
@@ -77,12 +77,29 @@ extension SignInController: SignInTransitions {
             navBarTitle = configuration.signingIntoExisting
         }
         
-        model.currentSignIns = allSignIns.filter{ $0.signInName == signInName }
+        model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
         model.navBarOptions = .title
         model.navBarTitle = navBarTitle
     }
     
-    func signInCompleted(_ signInName: String) {
+    func signInCancelled(_ signIn: GenericSignIn) {
+        let navBarTitle: String
+        
+        switch accountMode {
+        case .create:
+            navBarTitle = configuration.createNewAccount
+            model.currentSignIns = allSignIns.filter{ $0.userType == .owning }
+        case .signIn:
+            navBarTitle = configuration.signIntoExisting
+            model.currentSignIns = allSignIns
+        }
+        
+        model.navBarTitle = navBarTitle
+        model.screenState = .list
+        model.navBarOptions = .all
+    }
+    
+    func signInCompleted(_ signIn: GenericSignIn) {
         let navBarTitle: String
         switch accountMode {
         case .create:
@@ -94,7 +111,7 @@ extension SignInController: SignInTransitions {
         model.navBarTitle = navBarTitle
     }
     
-    func userIsSignedOut(_ signInName: String) {
+    func userIsSignedOut(_ signIn: GenericSignIn) {
         // User has tapped button when there is a single one. They want to sign out.
         
         withAnimation(.easeInOut) {

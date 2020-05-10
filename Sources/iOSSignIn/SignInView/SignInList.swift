@@ -1,4 +1,5 @@
 import SwiftUI
+import iOSShared
 
 struct SignInList: View {
     let signIns: [SignInDescription]
