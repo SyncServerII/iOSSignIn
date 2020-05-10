@@ -1,4 +1,4 @@
-public enum ScreenState {
+enum ScreenState {
     case main
     case list
 }

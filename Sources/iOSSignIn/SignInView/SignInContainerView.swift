@@ -1,18 +1,19 @@
 import SwiftUI
 import Foundation
 
-public struct SignInContainerView: View {
+// Displays a collection of sign-ins, and allows the user to either sign in to an existing account, or create a new account
+struct SignInContainerView: View {
     @ObservedObject var model: SignInModel
     let padding:CGFloat = 50
     weak var delegate: SignInDelegate!
 
-    public init(model: SignInModel, delegate: SignInDelegate?) {
+    init(model: SignInModel, delegate: SignInDelegate?) {
         delegate?.backButtonTapped()
         self.model = model
         self.delegate = delegate
     }
         
-    public var body: some View {
+    var body: some View {
         VStack {
             if model.navBarOptions == .none {
                 self.containedView()

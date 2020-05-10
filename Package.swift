@@ -28,13 +28,15 @@ let package = Package(
         // 5/1/20; Can't import SwiftyDropbox as a swift package:
         // https://github.com/dropbox/SwiftyDropbox/issues/252
         // .package(url: "https://github.com/dropbox/SwiftyDropbox.git", .upToNextMajor(from: "5.1.0")),
+        
+        .package(url: "https://github.com/crspybits/PersistentValue.git", from: "0.6.0"),
     ],
     
     targets: [
         .target(
             name: "iOSSignIn",
             dependencies: [
-                "ServerShared",
+                "ServerShared", "PersistentValue"
             ]),
         .testTarget(
             name: "iOSSignInTests",

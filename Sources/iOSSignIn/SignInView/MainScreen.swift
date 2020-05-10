@@ -5,13 +5,12 @@ struct MainScreen: View {
     @ObservedObject var model:SignInModel
     weak var delegate: SignInDelegate!
     
-    // A public init is necessary for making the View publically visible!
-    public init(model:SignInModel, delegate: SignInDelegate?) {
+    init(model:SignInModel, delegate: SignInDelegate?) {
         self.model = model
         self.delegate = delegate
     }
     
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0) {
             Button(action: {
                 withAnimation(.easeInOut) {

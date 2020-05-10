@@ -3,7 +3,7 @@ import SwiftUI
 
 // Images from https://stackoverflow.com/questions/56514998/find-all-available-images-for-imagesystemname-in-swiftui
 
-public struct NavBarButton {
+struct NavBarButton {
     public let hidden: Bool
     public let action: ()->()
     
@@ -14,14 +14,14 @@ public struct NavBarButton {
     }
 }
 
-public struct NavigationBar: View {
+struct NavigationBar: View {
     let buttonWidth: CGFloat = 20
     let title: String
     let backButton: NavBarButton
     let infoButton: NavBarButton
     let borderColor: Color
     
-    public init(title: String, borderColor: Color = .black,
+    init(title: String, borderColor: Color = .black,
         backButton: NavBarButton, infoButton:NavBarButton) {
         self.title = title
         self.backButton = backButton
@@ -29,7 +29,7 @@ public struct NavigationBar: View {
         self.borderColor = borderColor
     }
     
-    public var body: some View {
+    var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 0) {
             buttonIfAction(button:
                 Button(action: {
@@ -42,6 +42,7 @@ public struct NavigationBar: View {
             Text(title)
                 // This frame makes the text view span the full width, ending at the buttons.
                 .frame(maxWidth: .infinity)
+                // In order to have the text center-aligned along the horizontal.
                 .multilineTextAlignment(.center)
                 .padding([.top, .bottom], 10)
 

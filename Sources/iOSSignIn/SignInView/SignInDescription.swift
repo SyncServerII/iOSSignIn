@@ -2,9 +2,9 @@ import UIKit
 import ServerShared
 
 public struct SignInDescription: Identifiable {
-    public var id = UUID()
+    public let id = UUID()
     
-    // This isn't displayed in the UI, but determines the order in which the signins appear -- they are sorted on this.  It is also passed in the delegate method `signInButtonTapped`.
+    // This isn't displayed in the UI, but determines the order in which the signins appear -- they are sorted on this.  It is also passed in the SignInDelegate method `signInButtonTapped`.
     let signInName: String
     
     let userType: UserType

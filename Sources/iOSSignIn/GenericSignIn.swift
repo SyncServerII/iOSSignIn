@@ -3,6 +3,9 @@ import UIKit
 import ServerShared
 
 public protocol GenericSignIn : class {
+    /// E.g., "Facebook"
+    var signInName: String { get }
+    
     /// Some services, e.g., Facebook, are only suitable for sharing users-- i.e., they don't have cloud storage.
     var userType:UserType { get }
     
