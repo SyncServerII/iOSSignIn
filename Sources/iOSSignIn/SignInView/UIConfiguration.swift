@@ -1,13 +1,16 @@
 import UIKit
 
 public struct UIConfiguration {
-    // Title strings
+    // Title & help strings
     let signIntoExisting:String
     let signingIntoExisting:String
     let signedIntoExisting:String
     let createNewAccount:String
     let creatingNewAccount:String
     let createdNewAccount:String
+    let helpTextWhenCreatingNewAccount:String
+    
+    public static let defaultHelpText = "Creating a new account will give you a new account in the app. Your cloud storage account (e.g., Dropbox) will be used to save the files you create."
     
     // Default size of main sign-in view.
     let width: CGFloat
@@ -20,6 +23,7 @@ public struct UIConfiguration {
         createNewAccount:String = "Create New Account",
         creatingNewAccount:String = "Creating New Account",
         createdNewAccount:String = "Created New Account",
+        helpTextWhenCreatingNewAccount:String = Self.defaultHelpText,
         width: CGFloat = 250,
         height: CGFloat = 300) {
         
@@ -29,6 +33,7 @@ public struct UIConfiguration {
         self.createNewAccount = createNewAccount
         self.creatingNewAccount = creatingNewAccount
         self.createdNewAccount = createdNewAccount
+        self.helpTextWhenCreatingNewAccount = helpTextWhenCreatingNewAccount
         self.width = width
         self.height = height
     }

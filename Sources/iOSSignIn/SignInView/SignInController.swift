@@ -3,7 +3,6 @@ import SwiftUI
 class SignInController {
     let configuration: UIConfiguration
     let helpTitle = "Help"
-    let helpMessage = "Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type. Select a sign in type."
     
     private enum AccountMode {
         case signIn
@@ -32,7 +31,7 @@ extension SignInController: SignInDelegate {
     func helpInfo() -> (title: String, message: String) {
         return (
             title: helpTitle,
-            message: helpMessage
+            message: configuration.helpTextWhenCreatingNewAccount
         )
     }
     
@@ -52,7 +51,7 @@ extension SignInController: SignInDelegate {
         accountMode = .signIn
         model.currentSignIns = allSignIns
         model.screenState = .list
-        model.navBarOptions = .all
+        model.navBarOptions = [.backButton, .title]
         model.navBarTitle = configuration.signIntoExisting
     }
     
@@ -96,7 +95,7 @@ extension SignInController: SignInTransitions {
         
         model.navBarTitle = navBarTitle
         model.screenState = .list
-        model.navBarOptions = .all
+        model.navBarOptions =  [.backButton, .title]
     }
     
     func signInCompleted(_ signIn: GenericSignIn) {

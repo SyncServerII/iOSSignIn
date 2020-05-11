@@ -67,6 +67,8 @@ public class SignInManager : NSObject {
     
     private let transitions:SignInTransitions
     
+    public weak var delegate: SignInManagerDelegate!
+    
     init(transitions:SignInTransitions) {
         self.transitions = transitions
         super.init()
@@ -197,15 +199,18 @@ extension SignInManager: GenericSignInDelegate {
         transitions.signInCancelled(signIn)
     }
     
+    // TODO: Can we get rid of this? And just rely on `signInCompleted`? So far, it's not used in the iOSFacebook signin.
     public func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials) {
         //currentSignIn // = credentials
     }
     
     public func signInCompleted(_ signIn: GenericSignIn, autoSignIn: Bool) {
         transitions.signInCompleted(signIn)
+        delegate?.signInCompleted(self, signIn: signIn)
     }
     
     public func userIsSignedOut(_ signIn: GenericSignIn) {
         transitions.userIsSignedOut(signIn)
+        delegate?.userIsSignedOut(self, signIn: signIn)
     }
 }

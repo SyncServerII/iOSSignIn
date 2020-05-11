@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol GenericSignInDelegate: class {
+public protocol GenericSignInDelegate: AnyObject {
     func signInStarted(_ signIn: GenericSignIn)
     func signInCancelled(_ signIn: GenericSignIn)
     func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials)
