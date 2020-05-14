@@ -36,7 +36,7 @@ extension SignInController: SignInDelegate {
     }
     
     func infoButtonTapped() {
-        model.showHelpInfo.toggle()
+        model.showHelpAlert.toggle()
     }
     
     func mainScreenIsDisplayed() {

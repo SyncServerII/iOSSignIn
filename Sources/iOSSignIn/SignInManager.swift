@@ -75,7 +75,7 @@ public class SignInManager : NSObject {
 /*
         signInStateChanged.resetTargets!()
         _ = Network.session().connectionStateCallbacks.addTarget!(self, with: #selector(networkChangedState))
-        
+
         // See [1].
         if SignInManager.currentSignInName.value == nil && SignInManager.currentSignInName0.stringValue != "" {
             SignInManager.currentSignInName.value = SignInManager.currentSignInName0.stringValue
@@ -145,6 +145,7 @@ public class SignInManager : NSObject {
     }
     
     /// Based on the currently active signin method, this will call the corresponding method on that class.
+    @discardableResult
     public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
         for signIn in allSignIns {
@@ -192,6 +193,11 @@ extension SignInManager : SignInManagerDelegate {
 
 extension SignInManager: GenericSignInDelegate {
     public func signInStarted(_ signIn: GenericSignIn) {
+        // Must not have any other signin's active when attempting to sign in.
+        assert(currentSignIn == nil)
+        // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
+        currentSignIn = signIn
+        
         transitions.signInStarted(signIn)
     }
     
@@ -201,15 +207,19 @@ extension SignInManager: GenericSignInDelegate {
     
     // TODO: Can we get rid of this? And just rely on `signInCompleted`? So far, it's not used in the iOSFacebook signin.
     public func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials) {
-        //currentSignIn // = credentials
+        currentSignIn = signIn
     }
     
     public func signInCompleted(_ signIn: GenericSignIn, autoSignIn: Bool) {
+        // This is necessary for silent sign in's.
+        currentSignIn = signIn
+        
         transitions.signInCompleted(signIn)
         delegate?.signInCompleted(self, signIn: signIn)
     }
     
     public func userIsSignedOut(_ signIn: GenericSignIn) {
+        currentSignIn = nil
         transitions.userIsSignedOut(signIn)
         delegate?.userIsSignedOut(self, signIn: signIn)
     }

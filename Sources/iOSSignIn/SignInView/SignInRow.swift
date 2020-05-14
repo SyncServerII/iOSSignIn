@@ -11,7 +11,7 @@ struct SignInRow: View {
     }
 }
 
-// Will be using this to hold a UIView based sign-in button
+// Map a UIView to a View. Will be using this to hold a UIView based sign-in button
 // https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
 struct ButtonView: UIViewRepresentable {
     let view: UIView
