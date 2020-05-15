@@ -1,15 +1,22 @@
 import SwiftUI
+import ServerShared
+import iOSShared
+
+// When there is an invitation, an invitation needs to be supplied when this starts, and then drive the behavior. Otherwise, the sign-in behavior is driven by the user choice between sign in and creating an account.
 
 class SignInController {
     let configuration: UIConfiguration
     let helpTitle = "Help"
-    
-    private enum AccountMode {
-        case signIn
-        case create
+
+    private var accountMode:AccountMode?
+    public var invitation: Invitation? {
+        didSet {
+            model.includeAcceptInvitation = invitation != nil
+            
+            // Design calls for immediately showing the account list-- because at this point the user will have been trying to accept the invitation.
+            allowUserToAcceptInvitation()
+        }
     }
-    
-    private var accountMode:AccountMode = .signIn
 
     let model:SignInModel
     let allSignIns: [SignInDescription]
@@ -25,14 +32,42 @@ class SignInController {
         model = SignInModel()
         model.navBarOptions = .none
     }
+    
+    private func allowUserToAcceptInvitation() {
+        if let invitation = invitation {
+            accountMode = .acceptInvitationAndCreateUser(invitation: invitation)
+            
+            model.screenState = .list
+            model.navBarOptions = [.backButton, .title, .infoButton]
+            model.navBarTitle = configuration.createAccountAndAcceptInvitation
+            
+            if invitation.allowsSocialSharing {
+                model.currentSignIns = allSignIns
+            }
+            else {
+                model.currentSignIns = allSignIns.filter{ $0.userType == .owning }
+            }
+        }
+        else {
+            logger.error("ERROR: Did not have invitation")
+        }
+    }
 }
 
-extension SignInController: SignInDelegate {
-    func helpInfo() -> (title: String, message: String) {
-        return (
-            title: helpTitle,
-            message: configuration.helpTextWhenCreatingNewAccount
-        )
+extension SignInController: SignInDelegate {    
+    var helpInfo: (title: String, message: String) {
+        if let _ = invitation {
+            return (
+                title: helpTitle,
+                message: configuration.helpTextWhenAcceptingInvitation
+            )
+        }
+        else {
+            return (
+                title: helpTitle,
+                message: configuration.helpTextWhenCreatingNewAccount
+            )
+        }
     }
     
     func infoButtonTapped() {
@@ -55,8 +90,12 @@ extension SignInController: SignInDelegate {
         model.navBarTitle = configuration.signIntoExisting
     }
     
+    func mainScreenAcceptInvitationButtonTapped() {
+        allowUserToAcceptInvitation()
+    }
+    
     func mainScreenCreateAccountButtonTapped() {
-        accountMode = .create
+        accountMode = .createOwningUser
         model.currentSignIns = allSignIns.filter{ $0.userType == .owning }
         model.screenState = .list
         model.navBarOptions = .all
@@ -64,16 +103,23 @@ extension SignInController: SignInDelegate {
     }
 }
 
-extension SignInController: SignInTransitions {
+extension SignInController: SignInManagerControlDelegate {
     func signInStarted(_ signIn: GenericSignIn) {
         // Transitional state. User has tapped sign in button -- they want to create an account or to sign into an existing account.
         
+        guard let accountMode = accountMode else {
+            logger.error("ERROR: Could not get AccountMode")
+            return
+        }
+        
         let navBarTitle: String
         switch accountMode {
-        case .create:
+        case .createOwningUser:
             navBarTitle = configuration.creatingNewAccount
         case .signIn:
             navBarTitle = configuration.signingIntoExisting
+        case .acceptInvitationAndCreateUser:
+            navBarTitle = configuration.creatingAccountAndAcceptingInvitation
         }
         
         model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
@@ -84,13 +130,26 @@ extension SignInController: SignInTransitions {
     func signInCancelled(_ signIn: GenericSignIn) {
         let navBarTitle: String
         
+        guard let accountMode = accountMode else {
+            logger.error("ERROR: Could not get AccountMode")
+            return
+        }
+        
         switch accountMode {
-        case .create:
+        case .createOwningUser:
             navBarTitle = configuration.createNewAccount
             model.currentSignIns = allSignIns.filter{ $0.userType == .owning }
         case .signIn:
             navBarTitle = configuration.signIntoExisting
             model.currentSignIns = allSignIns
+        case .acceptInvitationAndCreateUser(let invitation):
+            navBarTitle = configuration.createAccountAndAcceptInvitation
+            if invitation.allowsSocialSharing {
+                model.currentSignIns = allSignIns
+            }
+            else {
+                model.currentSignIns = allSignIns.filter{ $0.userType == .owning }
+            }
         }
         
         model.navBarTitle = navBarTitle
@@ -100,11 +159,19 @@ extension SignInController: SignInTransitions {
     
     func signInCompleted(_ signIn: GenericSignIn) {
         let navBarTitle: String
+        
+        guard let accountMode = accountMode else {
+            logger.error("ERROR: Could not get AccountMode")
+            return
+        }
+        
         switch accountMode {
-        case .create:
+        case .createOwningUser:
             navBarTitle = configuration.createdNewAccount
         case .signIn:
             navBarTitle = configuration.signedIntoExisting
+        case .acceptInvitationAndCreateUser:
+            navBarTitle = configuration.createdAccountAndAcceptedInvitation
         }
         
         model.navBarTitle = navBarTitle
@@ -113,5 +180,9 @@ extension SignInController: SignInTransitions {
     func userIsSignedOut(_ signIn: GenericSignIn) {        
         model.screenState = .main
         model.navBarOptions = .none
+    }
+    
+    func accountMode(_ signIn: GenericSignIn) -> AccountMode? {
+        return accountMode
     }
 }

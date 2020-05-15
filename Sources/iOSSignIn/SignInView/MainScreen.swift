@@ -19,6 +19,18 @@ struct MainScreen: View {
             }) {
                 Text("Sign-in")
             }
+                        
+            if model.includeAcceptInvitation {
+                Spacer().frame(minHeight: 10, maxHeight: 50)
+                
+                Button(action: {
+                    withAnimation(.easeInOut) {
+                        self.delegate?.mainScreenAcceptInvitationButtonTapped()
+                    }
+                }) {
+                    Text("Accept Invitation")
+                }
+            }
             
             Spacer().frame(minHeight: 10, maxHeight: 50)
             

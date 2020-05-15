@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import iOSShared
 
 public protocol SelectorTargets {
     var selectorTargets:[(target: NSObject, action: Selector)] { get set }
@@ -65,12 +66,14 @@ public class SignInManager : NSObject {
     
     public fileprivate(set) var lastStateChangeSignedUserIn = false
     
-    private let transitions:SignInTransitions
+    // The intent is that this delegate operates "down" to the controller
+    private weak var controlDelegate:SignInManagerControlDelegate?
     
+    // And this delegate operates "up" to the owner of the manager
     public weak var delegate: SignInManagerDelegate!
     
-    init(transitions:SignInTransitions) {
-        self.transitions = transitions
+    init(controlDelegate:SignInManagerControlDelegate) {
+        self.controlDelegate = controlDelegate
         super.init()
 /*
         signInStateChanged.resetTargets!()
@@ -198,11 +201,12 @@ extension SignInManager: GenericSignInDelegate {
         // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
         currentSignIn = signIn
         
-        transitions.signInStarted(signIn)
+        controlDelegate?.signInStarted(signIn)
     }
     
     public func signInCancelled(_ signIn: GenericSignIn) {
-        transitions.signInCancelled(signIn)
+        currentSignIn = nil
+        controlDelegate?.signInCancelled(signIn)
     }
     
     // TODO: Can we get rid of this? And just rely on `signInCompleted`? So far, it's not used in the iOSFacebook signin.
@@ -214,13 +218,19 @@ extension SignInManager: GenericSignInDelegate {
         // This is necessary for silent sign in's.
         currentSignIn = signIn
         
-        transitions.signInCompleted(signIn)
-        delegate?.signInCompleted(self, signIn: signIn)
+        controlDelegate?.signInCompleted(signIn)
+        
+        if let mode = controlDelegate?.accountMode(signIn) {
+            delegate?.signInCompleted(self, signIn: signIn, mode: mode)
+        }
+        else {
+            logger.error("ERROR: Could not get AccountMode")
+        }
     }
     
     public func userIsSignedOut(_ signIn: GenericSignIn) {
         currentSignIn = nil
-        transitions.userIsSignedOut(signIn)
+        controlDelegate?.userIsSignedOut(signIn)
         delegate?.userIsSignedOut(self, signIn: signIn)
     }
 }

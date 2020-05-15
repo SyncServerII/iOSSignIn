@@ -20,6 +20,7 @@ class SignInModel: ObservableObject {
     
     @Published var currentSignIns = [SignInDescription]()
     @Published var screenState: ScreenState = .main
+    @Published var includeAcceptInvitation: Bool = false
     @Published var navBarOptions: NavBarOption = .title
     @Published var navBarTitle: String = "Sign into Existing Account"
     @Published var showHelpAlert: Bool = false

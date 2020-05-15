@@ -8,7 +8,6 @@ struct SignInContainerView: View {
     weak var delegate: SignInDelegate!
 
     init(model: SignInModel, delegate: SignInDelegate?) {
-        delegate?.backButtonTapped()
         self.model = model
         self.delegate = delegate
     }
@@ -39,7 +38,7 @@ struct SignInContainerView: View {
                     self.containedView()
                 }
                 .alert(isPresented: $model.showHelpAlert) {
-                    let text = delegate.helpInfo()
+                    let text = delegate.helpInfo
                     return Alert(title: Text(text.title),
                         message: Text(text.message),
                         dismissButton: .default(Text("OK")))
