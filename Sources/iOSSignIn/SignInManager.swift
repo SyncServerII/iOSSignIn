@@ -221,7 +221,7 @@ extension SignInManager: GenericSignInDelegate {
         controlDelegate?.signInCompleted(signIn)
         
         if let mode = controlDelegate?.accountMode(signIn) {
-            delegate?.signInCompleted(self, signIn: signIn, mode: mode)
+            delegate?.signInCompleted(self, signIn: signIn, mode: mode, autoSignIn: autoSignIn)
         }
         else {
             logger.error("ERROR: Could not get AccountMode")
