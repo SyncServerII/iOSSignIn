@@ -226,6 +226,8 @@ extension SignInManager: GenericSignInDelegate {
         else {
             logger.error("ERROR: Could not get AccountMode")
         }
+        
+        logger.info("Credentials: \(String(describing: currentSignIn?.credentials))")
     }
     
     public func userIsSignedOut(_ signIn: GenericSignIn) {
