@@ -10,5 +10,6 @@ public protocol GenericCredentialsBasics {
     /// A name suitable for identifying the user via the UI. If available this should be the users email. Otherwise, it could be the same as the username.
     var uiDisplayName:String? { get }
     
-    var cloudStorageType: CloudStorageType { get }
+    // This *must* be non-nil *only* for cloud storage owning accounts. E.g., Dropbox.
+    var cloudStorageType: CloudStorageType? { get }
 }
