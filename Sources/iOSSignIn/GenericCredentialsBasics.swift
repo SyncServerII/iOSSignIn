@@ -1,3 +1,4 @@
+import ServerShared
 
 public protocol GenericCredentialsBasics {
     /// A unique identifier for the user for the specific account type. E.g., for Google this is their `sub`.
@@ -8,4 +9,6 @@ public protocol GenericCredentialsBasics {
 
     /// A name suitable for identifying the user via the UI. If available this should be the users email. Otherwise, it could be the same as the username.
     var uiDisplayName:String? { get }
+    
+    var cloudStorageType: CloudStorageType { get }
 }

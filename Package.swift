@@ -23,6 +23,8 @@ let package = Package(
     // https://github.com/apple/swift-evolution/blob/master/proposals/0273-swiftpm-conditional-target-dependencies.md
     dependencies: [
         .package(url: "https://github.com/SyncServerII/ServerShared.git", .branch("master")),
+        .package(url: "https://github.com/SyncServerII/iOSShared.git", .branch("master")),
+
         //.package(path: "../ServerShared"),
         
         // 5/1/20; Can't import SwiftyDropbox as a swift package:
@@ -36,7 +38,7 @@ let package = Package(
         .target(
             name: "iOSSignIn",
             dependencies: [
-                "ServerShared", "PersistentValue"
+                "ServerShared", "PersistentValue", "iOSShared"
             ]),
         .testTarget(
             name: "iOSSignInTests",

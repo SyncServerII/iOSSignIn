@@ -9,6 +9,8 @@
 
 import UIKit
 import iOSShared
+import Foundation
+import PersistentValue
 
 public protocol SelectorTargets {
     var selectorTargets:[(target: NSObject, action: Selector)] { get set }
@@ -40,9 +42,6 @@ public extension SelectorTargets {
         }
     }
 }
-
-import Foundation
-import PersistentValue
 
 // This class needs to be derived from NSObject because of use of `Network.session().connectionStateCallbacks` below.
 public class SignInManager : NSObject {
