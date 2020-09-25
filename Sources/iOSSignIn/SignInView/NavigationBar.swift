@@ -38,6 +38,7 @@ struct NavigationBar: View {
                     Image(systemName: "chevron.left")
                 }.frame(width: buttonWidth),
                 show: !backButton.hidden)
+                .padding([.leading], 10)
             
             Text(title)
                 // This frame makes the text view span the full width, ending at the buttons.
@@ -53,7 +54,7 @@ struct NavigationBar: View {
                     Image(systemName: "info.circle")
                 }.frame(width: buttonWidth),
                 show: !infoButton.hidden)
-            .padding([.trailing], 5)
+                .padding([.trailing], 10)
         }.border(borderColor)
         .background(Color.gray.opacity(0.2))
     }

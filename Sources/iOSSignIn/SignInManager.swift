@@ -127,6 +127,8 @@ public class SignInManager : NSObject {
         // Make sure we don't already have an instance of this signIn
         let name = stringNameForSignIn(signIn)
         let result = allSignIns.filter({stringNameForSignIn($0) == name})
+        
+        #warning("Remove this. Change to throwing method?")
         assert(result.count == 0)
         
         allSignIns.append(signIn)
@@ -196,6 +198,7 @@ extension SignInManager : SignInManagerDelegate {
 extension SignInManager: GenericSignInDelegate {
     public func signInStarted(_ signIn: GenericSignIn) {
         // Must not have any other signin's active when attempting to sign in.
+        #warning("Don't use an assert. Find some other way to indicate an error.")
         assert(currentSignIn == nil)
         // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
         currentSignIn = signIn
@@ -223,6 +226,7 @@ extension SignInManager: GenericSignInDelegate {
             delegate?.signInCompleted(self, signIn: signIn, mode: mode, autoSignIn: autoSignIn)
         }
         else {
+            #warning("Why not have an error delegate method and report to caller?")
             logger.error("ERROR: Could not get AccountMode")
         }
         
