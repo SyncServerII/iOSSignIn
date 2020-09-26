@@ -2,18 +2,16 @@ import SwiftUI
 import ServerShared
 
 public protocol SignInServicesHelper {
-    // Get the current `GenericSignIn`
-    var currentSignIn:GenericSignIn? { get }
+    var currentCredentials: GenericCredentials? { get }
+    
+    // For cloud storage owning accounts, the cloud storage type for the currentCredentials.
+    var cloudStorageType: CloudStorageType? { get }
     
     // Set the current `Invitation` to nil.
     func resetCurrentInvitation()
 }
 
-public class SignInServices: SignInServicesHelper {
-    public var currentSignIn: GenericSignIn? {
-        return manager.currentSignIn
-    }
-    
+public class SignInServices {
     public let manager: SignInManager
     
     /// Use this View to present the various sign-in options to the user.
@@ -28,15 +26,25 @@ public class SignInServices: SignInServicesHelper {
             controller.invitation = invitation
         }
     }
-    
-    public func resetCurrentInvitation() {
-        invitation = nil
-    }
-    
+
     private let controller:SignInController
     
     public init(descriptions: [SignInDescription], configuration: UIConfiguration) {
         controller = SignInController(signIns: descriptions, configuration: configuration)
         manager = SignInManager(controlDelegate: controller)
+    }
+}
+
+extension SignInServices: SignInServicesHelper {
+    public var currentCredentials: GenericCredentials? {
+        return manager.currentSignIn?.credentials
+    }
+    
+    public var cloudStorageType: CloudStorageType? {
+        return manager.currentSignIn?.cloudStorageType
+    }
+    
+    public func resetCurrentInvitation() {
+        invitation = nil
     }
 }
