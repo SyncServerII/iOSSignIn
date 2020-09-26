@@ -49,6 +49,7 @@ class SignInController {
             }
         }
         else {
+            #warning("Report error via a delegate.")
             logger.error("ERROR: Did not have invitation")
         }
     }
