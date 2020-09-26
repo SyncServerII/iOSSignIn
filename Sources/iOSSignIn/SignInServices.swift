@@ -2,8 +2,11 @@ import SwiftUI
 import ServerShared
 
 public protocol SignInServicesHelper {
+    // Get the current `GenericSignIn`
     var currentSignIn:GenericSignIn? { get }
-    var invitation: Invitation? { get set }
+    
+    // Set the current `Invitation` to nil.
+    func resetCurrentInvitation()
 }
 
 public class SignInServices: SignInServicesHelper {
@@ -24,6 +27,10 @@ public class SignInServices: SignInServicesHelper {
         didSet {
             controller.invitation = invitation
         }
+    }
+    
+    public func resetCurrentInvitation() {
+        invitation = nil
     }
     
     private let controller:SignInController
