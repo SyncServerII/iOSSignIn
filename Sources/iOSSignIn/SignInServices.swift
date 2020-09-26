@@ -7,6 +7,8 @@ public protocol SignInServicesHelper {
     // For cloud storage owning accounts, the cloud storage type for the currentCredentials.
     var cloudStorageType: CloudStorageType? { get }
     
+    var userType: UserType? { get }
+    
     // Sign the current user out.
     func signUserOut()
     
@@ -49,6 +51,10 @@ extension SignInServices: SignInServicesHelper {
     
     public var cloudStorageType: CloudStorageType? {
         return manager.currentSignIn?.cloudStorageType
+    }
+    
+    public var userType: UserType? {
+        return manager.currentSignIn?.userType
     }
     
     public func resetCurrentInvitation() {
