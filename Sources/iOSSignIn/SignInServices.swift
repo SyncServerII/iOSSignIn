@@ -1,7 +1,7 @@
 import SwiftUI
 import ServerShared
 
-public protocol SignInServicesHelper {
+public protocol SignInServicesHelper: AnyObject {
     var currentCredentials: GenericCredentials? { get }
     
     // For cloud storage owning accounts, the cloud storage type for the currentCredentials.
@@ -33,32 +33,13 @@ public class SignInServices {
     }
 
     private let controller:SignInController
-    
-    public init(descriptions: [SignInDescription], configuration: UIConfiguration, signInManager: SignInManager) {
-        controller = SignInController(signIns: descriptions, configuration: configuration)
-        manager = signInManager
-        manager.controlDelegate = controller
-    }
-}
 
-extension SignInServices: SignInServicesHelper {
-    public func signUserOut() {
-        manager.currentSignIn?.signUserOut()
-    }
-    
-    public var currentCredentials: GenericCredentials? {
-        return manager.currentSignIn?.credentials
-    }
-    
-    public var cloudStorageType: CloudStorageType? {
-        return manager.currentSignIn?.cloudStorageType
-    }
-    
-    public var userType: UserType? {
-        return manager.currentSignIn?.userType
-    }
-    
-    public func resetCurrentInvitation() {
-        invitation = nil
+    /// `signIns` is the main integration point with iOSBasics. It must be the
+    /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
+    /// This object is weakly retained.
+    public init(descriptions: [SignInDescription], configuration: UIConfiguration, signIns: SignInManagerDelegate) {
+        controller = SignInController(signIns: descriptions, configuration: configuration)
+        manager = SignInManager(signIns: signIns)
+        manager.controlDelegate = controller
     }
 }
