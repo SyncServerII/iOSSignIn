@@ -34,9 +34,9 @@ public class SignInServices {
 
     private let controller:SignInController
     
-    public init(descriptions: [SignInDescription], configuration: UIConfiguration) {
+    public init(descriptions: [SignInDescription], configuration: UIConfiguration, signIns: SignInManagerDelegate? = nil) {
         controller = SignInController(signIns: descriptions, configuration: configuration)
-        manager = SignInManager(controlDelegate: controller)
+        manager = SignInManager(controlDelegate: controller, signIns: signIns)
     }
 }
 

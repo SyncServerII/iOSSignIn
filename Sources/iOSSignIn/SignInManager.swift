@@ -71,8 +71,12 @@ public class SignInManager : NSObject {
     // And this delegate operates "up" to the owner of the manager
     public weak var delegate: SignInManagerDelegate!
     
-    init(controlDelegate:SignInManagerControlDelegate) {
+    weak var signIns: SignInManagerDelegate?
+    
+    /// signIns provides the main integration point with iOSBasics. Pass in the `SignIns` object that you also pass to the SyncServer constructor in iOSBasics.
+    init(controlDelegate:SignInManagerControlDelegate, signIns: SignInManagerDelegate? = nil) {
         self.controlDelegate = controlDelegate
+        self.signIns = signIns
         super.init()
 /*
         signInStateChanged.resetTargets!()
@@ -223,7 +227,7 @@ extension SignInManager: GenericSignInDelegate {
         controlDelegate?.signInCompleted(signIn)
         
         if let mode = controlDelegate?.accountMode(signIn) {
-            delegate?.signInCompleted(self, signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+            signInCompleted(signIn: signIn, mode: mode, autoSignIn: autoSignIn)
         }
         else {
             #warning("Why not have an error delegate method and report to caller?")
@@ -236,6 +240,19 @@ extension SignInManager: GenericSignInDelegate {
     public func userIsSignedOut(_ signIn: GenericSignIn) {
         currentSignIn = nil
         controlDelegate?.userIsSignedOut(signIn)
+        userIsSignedOut(signIn: signIn)
+    }
+}
+
+// Call delegate methods.
+private extension SignInManager {
+    func signInCompleted(signIn: GenericSignIn, mode: AccountMode, autoSignIn: Bool) {
+       delegate?.signInCompleted(self, signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+       signIns?.signInCompleted(self, signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+    }
+    
+    func userIsSignedOut(signIn: GenericSignIn) {
         delegate?.userIsSignedOut(self, signIn: signIn)
+        signIns?.userIsSignedOut(self, signIn: signIn)
     }
 }
