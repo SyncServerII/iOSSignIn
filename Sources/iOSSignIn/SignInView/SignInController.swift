@@ -14,7 +14,9 @@ class SignInController {
             model.includeAcceptInvitation = invitation != nil
             
             // Design calls for immediately showing the account list-- because at this point the user will have been trying to accept the invitation.
-            allowUserToAcceptInvitation()
+            if let _ = invitation {
+                allowUserToAcceptInvitation()
+            }
         }
     }
 
