@@ -104,11 +104,11 @@ public class SignInManager : NSObject {
     /// Set this to establish the current SignIn mechanism in use in the app.
     public var currentSignIn:GenericSignIn? {
         didSet {
-            if currentSignIn == nil {
-                Self.currentSignInName.value = nil
+            if let currentSignIn = currentSignIn {
+                Self.currentSignInName.value = stringNameForSignIn(currentSignIn)
             }
             else {
-                Self.currentSignInName.value = stringNameForSignIn(currentSignIn!)
+                Self.currentSignInName.value = nil
             }
         }
     }
