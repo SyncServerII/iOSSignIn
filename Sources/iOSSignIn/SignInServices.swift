@@ -37,6 +37,7 @@ public class SignInServices {
     public init(descriptions: [SignInDescription], configuration: UIConfiguration, signInManager: SignInManager) {
         controller = SignInController(signIns: descriptions, configuration: configuration)
         manager = signInManager
+        manager.controlDelegate = controller
     }
 }
 
