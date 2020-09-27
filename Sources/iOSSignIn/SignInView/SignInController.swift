@@ -109,7 +109,7 @@ extension SignInController: SignInManagerControlDelegate {
         // Non-transitional state. User is signed in.
         model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
         model.navBarOptions = .title
-        model.navBarTitle = configuration.alreadySignedIn
+        model.navBarTitle = configuration.signedIntoExisting
         model.screenState = .list
     }
     
