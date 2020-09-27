@@ -6,6 +6,8 @@ public struct UIConfiguration {
     let signingIntoExisting:String
     let signedIntoExisting:String
     
+    let alreadySignedIn:String
+    
     let createNewAccount:String
     let creatingNewAccount:String
     let createdNewAccount:String
@@ -28,6 +30,8 @@ public struct UIConfiguration {
         signingIntoExisting:String = "Signing into Existing Account",
         signedIntoExisting:String = "Signed into Existing Account",
         
+        alreadySignedIn:String = "Signed into Account",
+        
         createNewAccount:String = "Create New Account",
         creatingNewAccount:String = "Creating New Account",
         createdNewAccount:String = "Created New Account",
@@ -44,6 +48,8 @@ public struct UIConfiguration {
         self.signIntoExisting = signIntoExisting
         self.signingIntoExisting = signingIntoExisting
         self.signedIntoExisting = signedIntoExisting
+        
+        self.alreadySignedIn = alreadySignedIn
         
         self.createNewAccount = createNewAccount
         self.creatingNewAccount = creatingNewAccount

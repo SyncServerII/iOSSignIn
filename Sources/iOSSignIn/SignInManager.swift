@@ -150,6 +150,7 @@ public class SignInManager : NSObject {
         // To accomodate sticky sign-in's-- we might as well have a `currentSignIn` value immediately after addSignIn's are called.
         if userSignedIn(withSignInName: name) {
             currentSignIn = signIn
+            controlDelegate?.silentSignIn(signIn)
         }
     }
     

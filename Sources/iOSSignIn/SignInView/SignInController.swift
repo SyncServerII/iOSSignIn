@@ -105,6 +105,13 @@ extension SignInController: SignInDelegate {
 }
 
 extension SignInController: SignInManagerControlDelegate {
+    func silentSignIn(_ signIn: GenericSignIn) {
+        // Non-transitional state. User is signed in.
+        model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
+        model.navBarOptions = .title
+        model.navBarTitle = configuration.alreadySignedIn
+    }
+    
     func signInStarted(_ signIn: GenericSignIn) {
         // Transitional state. User has tapped sign in button -- they want to create an account or to sign into an existing account.
         
