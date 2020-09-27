@@ -110,6 +110,7 @@ extension SignInController: SignInManagerControlDelegate {
         model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
         model.navBarOptions = .title
         model.navBarTitle = configuration.alreadySignedIn
+        model.screenState = .list
     }
     
     func signInStarted(_ signIn: GenericSignIn) {
