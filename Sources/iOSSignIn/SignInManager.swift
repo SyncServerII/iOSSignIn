@@ -66,16 +66,17 @@ public class SignInManager : NSObject {
     public fileprivate(set) var lastStateChangeSignedUserIn = false
     
     // The intent is that this delegate operates "down" to the controller
-    private weak var controlDelegate:SignInManagerControlDelegate?
+    weak var controlDelegate:SignInManagerControlDelegate?
     
     // And this delegate operates "up" to the owner of the manager
     public weak var delegate: SignInManagerDelegate!
     
     weak var signIns: SignInManagerDelegate?
     
-    /// signIns provides the main integration point with iOSBasics. Pass in the `SignIns` object that you also pass to the SyncServer constructor in iOSBasics.
-    init(controlDelegate:SignInManagerControlDelegate, signIns: SignInManagerDelegate? = nil) {
-        self.controlDelegate = controlDelegate
+    /// `signIns` is the main integration point with iOSBasics. It must be the
+    /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
+    /// This object is weakly retained.
+    public init(signIns: SignInManagerDelegate) {
         self.signIns = signIns
         super.init()
 /*
