@@ -14,6 +14,8 @@ public protocol SignInServicesHelper: AnyObject {
     
     // Set the current `Invitation` to nil.
     func resetCurrentInvitation()
+    
+    func getSharingInvitationInfo(sharingInvitationUUID: UUID, completion: @escaping (Swift.Result<SharingInvitationInfo, Error>)->())
 }
 
 public class SignInServices {
