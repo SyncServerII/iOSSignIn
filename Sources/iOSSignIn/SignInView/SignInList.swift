@@ -11,5 +11,6 @@ struct SignInList: View {
         List(signIns) { signIn in
             SignInRow(description: signIn)
         }
+        .background(Color.red)
     }
 }
