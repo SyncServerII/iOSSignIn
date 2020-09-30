@@ -59,7 +59,7 @@ struct NavigationBar: View {
                 .padding([.top], 20)
 
         }.border(borderColor)
-        .background(Color.gray.opacity(0.2))
+        //.background(Color.gray.opacity(0.2))
     }
     
     private func buttonIfAction<Content: View>(button: Content, show: Bool) -> some View {
