@@ -37,6 +37,7 @@ struct SignInContainerView: View {
                 Container {
                     self.containedView()
                 }
+                .background(Color.white)
                 .alert(isPresented: $model.showHelpAlert) {
                     let text = delegate.helpInfo
                     return Alert(title: Text(text.title),
