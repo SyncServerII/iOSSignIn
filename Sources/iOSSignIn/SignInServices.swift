@@ -11,9 +11,6 @@ public protocol SignInServicesHelper: AnyObject {
     
     // Sign the current user out.
     func signUserOut()
-    
-    // Set the current `Invitation` to nil.
-    func resetCurrentInvitation()
 }
 
 public class SignInServices {
