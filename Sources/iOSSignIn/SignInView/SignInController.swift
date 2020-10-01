@@ -9,7 +9,7 @@ class SignInController {
     let helpTitle = "Help"
 
     private var accountMode:AccountMode?
-    public var invitation: Invitation? {
+    var invitation: Invitation? {
         didSet {
             model.includeAcceptInvitation = invitation != nil
             

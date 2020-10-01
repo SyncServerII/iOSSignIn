@@ -14,24 +14,15 @@ public protocol SignInServicesHelper: AnyObject {
     
     // Set the current `Invitation` to nil.
     func resetCurrentInvitation()
-    
-    func getSharingInvitationInfo(sharingInvitationUUID: UUID, completion: @escaping (Swift.Result<SharingInvitationInfo, Error>)->())
 }
 
 public class SignInServices {
     public let manager: SignInManager
+    public let sharingInvitation: SharingInvitation
     
     /// Use this View to present the various sign-in options to the user.
     public var signInView: some View {
         return SignInView(controller: controller, width: controller.configuration.width, height: controller.configuration.height)
-    }
-    
-    /// When an invitation is received, assign this.
-    #warning("Do we have a mechanism by which an invitation link can be tapped by the user and this assigned?")
-    public var invitation: Invitation? {
-        didSet {
-            controller.invitation = invitation
-        }
     }
 
     private let controller:SignInController
@@ -39,9 +30,24 @@ public class SignInServices {
     /// `signIns` is the main integration point with iOSBasics. It must be the
     /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
     /// This object is weakly retained.
-    public init(descriptions: [SignInDescription], configuration: UIConfiguration, signIns: SignInManagerDelegate) {
+    public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, signInManagerDelegate: SignInManagerDelegate, sharingInvitationHelper: SharingInvitationHelper) {
         controller = SignInController(signIns: descriptions, configuration: configuration)
         manager = SignInManager(signIns: signIns)
         manager.controlDelegate = controller
+        sharingInvitation = SharingInvitation(appBundleIdentifier: appBundleIdentifier, helper: sharingInvitationHelper)
+        sharingInvitation.delegate = self
+    }
+}
+
+extension SignInServices: SharingInvitationDelegate {
+    func sharingInvitationReceived(_ sharingInvitation: SharingInvitation, invite: Invitation) {
+        if manager.userIsSignedIn {
+            // Since the user is signed in, redeeming the new invitation doesn't need any more work in terms of signing-in. So, just pass the invitation along.
+            manager.delegate.sharingInvitationForSignedInUser(manager, invitation: invite)
+        }
+        else {
+            // User first needs to sign in. We're assuming they don't yet have an account on SyncServer. This will enable them to create an account on SyncServer.
+            controller.invitation = invite
+        }
     }
 }

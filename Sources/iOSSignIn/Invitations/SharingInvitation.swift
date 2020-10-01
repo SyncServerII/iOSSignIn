@@ -3,8 +3,13 @@ import ServerShared
 import iOSShared
 import UIKit
 
-public protocol SharingInvitationDelegate : AnyObject {
+protocol SharingInvitationDelegate : AnyObject {
     func sharingInvitationReceived(_ sharingInvitation: SharingInvitation, invite:Invitation)
+}
+
+public protocol SharingInvitationHelper: AnyObject {
+    // Get sharing invitation info from SyncServer.
+    func getSharingInvitationInfo(sharingInvitationUUID: UUID, completion: @escaping (Swift.Result<SharingInvitationInfo, Error>)->())
 }
 
 public class SharingInvitation {    
@@ -12,19 +17,19 @@ public class SharingInvitation {
     
     static let queryItemAuthorizationCode = "code"
     
-    public weak var delegate:SharingInvitationDelegate?
+    weak var delegate:SharingInvitationDelegate?
     
     // The upper/lower case sense of this is ignored.
     let urlScheme:String
     
-    weak var signInServicesHelper: SignInServicesHelper!
+    weak var helper: SharingInvitationHelper!
     let dispatchQueue: DispatchQueue
     
-    // Only keeps a weak reference to `SignInServicesHelper`
-    // `dispatchQueue`-- queue to call delegate on if delegate given
-    public init(appBundleIdentifier: String, signInServicesHelper: SignInServicesHelper, dispatchQueue: DispatchQueue = .main) {
+    // Only keeps a weak reference to `SignInHelpers`
+    // `dispatchQueue`-- queue to call delegate on if delegate given.
+    init(appBundleIdentifier: String, helper: SharingInvitationHelper, dispatchQueue: DispatchQueue = .main) {
         urlScheme = appBundleIdentifier + ".invitation"
-        self.signInServicesHelper = signInServicesHelper
+        self.helper = helper
         self.dispatchQueue = dispatchQueue
     }
     
@@ -41,6 +46,7 @@ public class SharingInvitation {
     }
     
     /// Returns true iff can handle the url.
+    /// Call this from the AppDelegate, or SceneDelegate if using that. (See https://github.com/dropbox/SwiftyDropbox/issues/259).
     public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         logger.debug("url: \(url)")
         
@@ -59,7 +65,7 @@ public class SharingInvitation {
                         
                         logger.debug("invitationCode: \(invitationCode)")
                         
-                        signInServicesHelper.getSharingInvitationInfo(sharingInvitationUUID: invitationCode) { [weak self] result in
+                        helper.getSharingInvitationInfo(sharingInvitationUUID: invitationCode) { [weak self] result in
                             guard let self = self else { return }
                             switch result {
                             case .failure(let error):

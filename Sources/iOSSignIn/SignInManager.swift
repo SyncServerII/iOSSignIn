@@ -71,12 +71,12 @@ public class SignInManager : NSObject {
     // And this delegate operates "up" to the owner of the manager
     public weak var delegate: SignInManagerDelegate!
     
-    weak var signIns: SignInManagerDelegate?
+    weak var signIns: SignInsDelegate?
     
     /// `signIns` is the main integration point with iOSBasics. It must be the
     /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
     /// This object is weakly retained.
-    public init(signIns: SignInManagerDelegate) {
+    init(signIns: SignInsDelegate) {
         self.signIns = signIns
         super.init()
 /*
