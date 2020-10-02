@@ -43,7 +43,7 @@ public class SignInServices {
     
     /// This is for invitations received via UI-- to allow user to copy/paste an invitation code.
     /// This drives the sign-in UI to allow the user to sign in. We're assuming they don't yet have an account on SyncServer. This will enable them to create an account on SyncServer.
-    func copyPaste(invitation: Invitation) throws {
+    public func copyPaste(invitation: Invitation) throws {
         guard !manager.userIsSignedIn else {
             throw SignInServicesError.userSignedIn
         }
