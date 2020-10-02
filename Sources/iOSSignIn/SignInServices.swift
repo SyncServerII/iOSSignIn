@@ -13,6 +13,10 @@ public protocol SignInServicesHelper: AnyObject {
     func signUserOut()
 }
 
+enum SignInServicesError: Error {
+    case userSignedIn
+}
+
 public class SignInServices {
     public let manager: SignInManager
     public let sharingInvitation: SharingInvitation
@@ -23,6 +27,7 @@ public class SignInServices {
     }
 
     private let controller:SignInController
+    private weak var helper: SharingInvitationHelper!
 
     /// `signIns` is the main integration point with iOSBasics. It must be the
     /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
@@ -32,7 +37,18 @@ public class SignInServices {
         manager = SignInManager(signIns: signIns)
         manager.controlDelegate = controller
         sharingInvitation = SharingInvitation(appBundleIdentifier: appBundleIdentifier, helper: sharingInvitationHelper)
+        helper = sharingInvitationHelper
         sharingInvitation.delegate = self
+    }
+    
+    /// This is for invitations received via UI-- to allow user to copy/paste an invitation code.
+    /// This drives the sign-in UI to allow the user to sign in. We're assuming they don't yet have an account on SyncServer. This will enable them to create an account on SyncServer.
+    func copyPaste(invitation: Invitation) throws {
+        guard !manager.userIsSignedIn else {
+            throw SignInServicesError.userSignedIn
+        }
+        
+        controller.invitation = invitation
     }
 }
 
