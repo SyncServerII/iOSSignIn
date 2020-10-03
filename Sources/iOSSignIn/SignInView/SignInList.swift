@@ -8,9 +8,13 @@ struct SignInList: View {
     }
     
     var body: some View {
-        List(signIns) { signIn in
-            Text("Some text")
-            //SignInRow(description: signIn)
+        VStack {
+            Text("Some text1")
+            Text("Some text2")
         }
+//        List(signIns) { signIn in
+//            Text("Some text")
+//            //SignInRow(description: signIn)
+//        }
     }
 }
