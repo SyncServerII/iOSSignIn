@@ -9,7 +9,8 @@ struct SignInList: View {
     
     var body: some View {
         List(signIns) { signIn in
-            SignInRow(description: signIn)
+            Text("Some text")
+            //SignInRow(description: signIn)
         }
     }
 }
