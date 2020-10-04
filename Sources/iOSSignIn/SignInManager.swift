@@ -46,20 +46,20 @@ public extension SelectorTargets {
 // This class needs to be derived from NSObject because of use of `Network.session().connectionStateCallbacks` below.
 public class SignInManager : NSObject {
     /// These must be stored in user defaults-- so that if they delete the app, we lose it, and can start again. Storing both the currentUIDisplayName and userId because the userId (at least for Google) is just a number and not intelligible in the UI.
-    public static var currentUIDisplayName = try! PersistentValue<String>(name: "SignInManager.currentUIDisplayName", storage: .userDefaults)
+    // public static var currentUIDisplayName = try! PersistentValue<String>(name: "SignInManager.currentUIDisplayName", storage: .userDefaults)
     
-    public static var currentUserId = try! PersistentValue<String>(name: "SignInManager.currentUserId", storage: .userDefaults)
+    //public static var currentUserId = try! PersistentValue<String>(name: "SignInManager.currentUserId", storage: .userDefaults)
     
     /// The class name of the current GenericSignIn
     // [1] Changing to using PersistentValue .file to deal with background launching.
-    static var currentSignInName0 = try! PersistentValue<String>(name: "SignInManager.currentSignIn", storage: .userDefaults)
+    //static var currentSignInName0 = try! PersistentValue<String>(name: "SignInManager.currentSignIn", storage: .userDefaults)
     
     static var currentSignInName = try! PersistentValue<String>(name: "SignInManager.currentSignIn", storage: .file)
-    
+
     public class SignInStateChanged: SelectorTargets {
         public var selectorTargets = [(target: NSObject, action: Selector)]()
     }
-    
+
     // Add a target/selector to this to be informed of sign in state changes.
     public var signInStateChanged = SignInStateChanged()
     
