@@ -19,9 +19,9 @@ public struct UIConfiguration {
 
     public static let defaultHelpText = "Creating a new account will give you a new account in the app. Your cloud storage account (e.g., Dropbox) will be used to save the files you create."
     
-    // Default size of main sign-in view.
-    let width: CGFloat
-    let height: CGFloat
+    // Default size of main sign-in view. Public so that other views can size themselves to the size of the sign-in view.
+    public let width: CGFloat
+    public let height: CGFloat
     
     public init(
         signIntoExisting: String = "Sign into Existing Account",
