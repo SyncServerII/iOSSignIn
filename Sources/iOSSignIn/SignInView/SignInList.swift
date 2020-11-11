@@ -1,14 +1,10 @@
 import SwiftUI
 
 struct SignInList: View {
-    let signIns: [SignInDescription]
-    
-    init(signIns: [SignInDescription]) {
-        self.signIns = signIns
-    }
+    @ObservedObject var model:SignInModel
     
     var body: some View {
-        List(signIns) { signIn in
+        List(model.currentSignIns) { signIn in
             SignInRow(description: signIn)
         }
     }

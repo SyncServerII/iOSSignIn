@@ -57,7 +57,7 @@ struct SignInContainerView: View {
                     
             case .list:
                 return AnyView(
-                    SignInList(signIns: model.currentSignIns)
+                    SignInList(model: model)
                 )
             }
         }
