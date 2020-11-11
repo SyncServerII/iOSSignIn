@@ -4,10 +4,10 @@ struct SignInList: View {
     @ObservedObject var model:SignInModel
     
     var body: some View {
-        ScrollView {
-            ForEach(model.currentSignIns) { signIn in
-                SignInRow(description: signIn)
-            }
+        List(model.currentSignIns) { signIn in
+            SignInRow(description: signIn)
+                .id(UUID().uuidString)
+            // The `id` is to attempt to resolve an updating issue.
         }
     }
 }
