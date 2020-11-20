@@ -1,7 +1,7 @@
 import UIKit
 import ServerShared
 
-public struct SignInDescription: Identifiable {
+public struct SignInDescription: Identifiable, Hashable {
     public let id = UUID()
     
     // This isn't displayed in the UI, but determines the order in which the signins appear -- they are sorted on this. It needs to match the GenericSignIn `signInName`.

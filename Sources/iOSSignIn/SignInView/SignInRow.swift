@@ -1,13 +1,14 @@
 
 import SwiftUI
 
-struct SignInRow: View {
+struct SignInRow: View, Identifiable {
+    let id = UUID()
     let description: SignInDescription
     
     var body: some View {
         VStack {
             ButtonView(view: description.button)
-        }
+        }.frame(height: 40)
     }
 }
 

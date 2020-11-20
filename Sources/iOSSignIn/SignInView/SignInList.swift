@@ -1,13 +1,17 @@
 import SwiftUI
 
+// Asked question about the problem with this list here:
+// https://stackoverflow.com/questions/64815266
+
 struct SignInList: View {
     @ObservedObject var model:SignInModel
     
     var body: some View {
-        List(model.currentSignIns) { signIn in
-            SignInRow(description: signIn)
-                .id(UUID().uuidString)
-            // The `id` is to attempt to resolve an updating issue.
+        ScrollView() {
+            ForEach(model.currentSignIns) { signIn in
+                SignInRow(description: signIn)
+                    .padding(.horizontal, 20)
+            }
         }
     }
 }
