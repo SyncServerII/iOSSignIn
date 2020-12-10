@@ -188,7 +188,8 @@ extension SignInController: SignInManagerControlDelegate {
         model.navBarTitle = navBarTitle
     }
     
-    func userIsSignedOut(_ signIn: GenericSignIn) {        
+    func userIsSignedOut(_ signIn: GenericSignIn) {
+        #warning("Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.")
         model.screenState = .main
         model.navBarOptions = .none
     }
