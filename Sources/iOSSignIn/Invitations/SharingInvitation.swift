@@ -10,6 +10,9 @@ protocol SharingInvitationDelegate : AnyObject {
 public protocol SharingInvitationHelper: AnyObject {
     // Get sharing invitation info from SyncServer.
     func getSharingInvitationInfo(sharingInvitationUUID: UUID, completion: @escaping (Swift.Result<SharingInvitationInfo, Error>)->())
+    
+    // Report an error/informational message.
+    func sharingInvitationUserAlert(_ sharingInvitation: SharingInvitation, title: String, message: String)
 }
 
 public class SharingInvitation {    
@@ -22,7 +25,10 @@ public class SharingInvitation {
     // The upper/lower case sense of this is ignored.
     let urlScheme:String
     
+    // Methods called on the main queue.
     weak var helper: SharingInvitationHelper!
+    
+    // For calling the `delegate` methods (`SharingInvitationDelegate`).
     let dispatchQueue: DispatchQueue
     
     // Only keeps a weak reference to `SignInHelpers`
@@ -71,13 +77,13 @@ public class SharingInvitation {
                             case .failure(let error):
                                 logger.error("\(error)")
                                 DispatchQueue.main.async {
-                                    Alert.show(withTitle: "Alert!", message: "There was an error contacting the server for the sharing information.")
+                                    self.helper.sharingInvitationUserAlert(self, title: "Alert!", message: "There was an error contacting the server for the sharing information.")
                                 }
                             case .success(let info):
                                 switch info {
                                 case .noInvitationFound:
                                     DispatchQueue.main.async {
-                                        Alert.show(withTitle: "Alert!", message: "No invitation was found on the server. Did the invitation expire?")
+                                        self.helper.sharingInvitationUserAlert(self, title: "Alert!", message: "No invitation was found on the server. Did the invitation expire?")
                                     }
                                 case .invitation(let invite):
                                     self.invitation = invite
