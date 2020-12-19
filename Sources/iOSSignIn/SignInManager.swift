@@ -67,6 +67,7 @@ public class SignInManager : NSObject {
     
     // The intent is that this delegate operates "down" to the controller
     weak var controlDelegate:SignInManagerControlDelegate?
+    var controlDelegateQueue: DispatchQueue = .main
     
     // And this delegate operates "up" to the owner of the manager
     public weak var delegate: SignInManagerDelegate!
@@ -150,7 +151,9 @@ public class SignInManager : NSObject {
         // To accomodate sticky sign-in's-- we might as well have a `currentSignIn` value immediately after addSignIn's are called.
         if userSignedIn(withSignInName: name) {
             currentSignIn = signIn
-            controlDelegate?.silentSignIn(signIn)
+            controlDelegateQueue.async { [weak self] in
+                self?.controlDelegate?.silentSignIn(signIn)
+            }
         }
     }
     
@@ -209,12 +212,16 @@ extension SignInManager: GenericSignInDelegate {
         // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
         currentSignIn = signIn
         
-        controlDelegate?.signInStarted(signIn)
+        controlDelegateQueue.async { [weak self] in
+            self?.controlDelegate?.signInStarted(signIn)
+        }
     }
     
     public func signInCancelled(_ signIn: GenericSignIn) {
         currentSignIn = nil
-        controlDelegate?.signInCancelled(signIn)
+        controlDelegateQueue.async { [weak self] in
+            self?.controlDelegate?.signInCancelled(signIn)
+        }
     }
     
     // TODO: Can we get rid of this? And just rely on `signInCompleted`? So far, it's not used in the iOSFacebook signin.
@@ -223,25 +230,31 @@ extension SignInManager: GenericSignInDelegate {
     }
     
     public func signInCompleted(_ signIn: GenericSignIn, autoSignIn: Bool) {
-        // This is necessary for silent sign in's.
-        currentSignIn = signIn
-        
-        controlDelegate?.signInCompleted(signIn)
-        
-        if let mode = controlDelegate?.accountMode(signIn) {
-            signInCompleted(signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+        controlDelegateQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            // This is necessary for silent sign in's.
+            self.currentSignIn = signIn
+            
+            self.controlDelegate?.signInCompleted(signIn)
+            
+            if let mode = self.controlDelegate?.accountMode(signIn) {
+                self.signInCompleted(signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+            }
+            else {
+                #warning("Why not have an error delegate method and report to caller?")
+                logger.error("ERROR: Could not get AccountMode")
+            }
+            
+            logger.info("Credentials: \(String(describing: self.currentSignIn?.credentials))")
         }
-        else {
-            #warning("Why not have an error delegate method and report to caller?")
-            logger.error("ERROR: Could not get AccountMode")
-        }
-        
-        logger.info("Credentials: \(String(describing: currentSignIn?.credentials))")
     }
     
     public func userIsSignedOut(_ signIn: GenericSignIn) {
         currentSignIn = nil
-        controlDelegate?.userIsSignedOut(signIn)
+        controlDelegateQueue.async { [weak self] in
+            self?.controlDelegate?.userIsSignedOut(signIn)
+        }
         userIsSignedOut(signIn: signIn)
     }
 }
