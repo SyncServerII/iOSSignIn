@@ -107,6 +107,11 @@ extension SignInController: SignInDelegate {
 }
 
 extension SignInController: SignInManagerControlDelegate {
+    func showAlert(_ signIn: GenericSignIn, title: String, message: String?) {
+        #warning("TODO: Need to report this to user")
+        logger.info("Alert: \(title): \(message)")
+    }
+    
     func silentSignIn(_ signIn: GenericSignIn) {
         // Non-transitional state. User is signed in.
         model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
@@ -119,7 +124,7 @@ extension SignInController: SignInManagerControlDelegate {
         // Transitional state. User has tapped sign in button -- they want to create an account or to sign into an existing account.
         
         guard let accountMode = accountMode else {
-            logger.error("ERROR: Could not get AccountMode")
+            logger.error("signInStarted: ERROR: Could not get AccountMode")
             return
         }
         
@@ -142,7 +147,7 @@ extension SignInController: SignInManagerControlDelegate {
         let navBarTitle: String
         
         guard let accountMode = accountMode else {
-            logger.error("ERROR: Could not get AccountMode")
+            logger.error("signInCancelled: ERROR: Could not get AccountMode")
             return
         }
         
@@ -172,7 +177,7 @@ extension SignInController: SignInManagerControlDelegate {
         let navBarTitle: String
         
         guard let accountMode = accountMode else {
-            logger.error("ERROR: Could not get AccountMode")
+            logger.error("SignInController.signInCompleted: ERROR: Could not get AccountMode")
             return
         }
         

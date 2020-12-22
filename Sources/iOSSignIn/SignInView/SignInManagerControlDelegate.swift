@@ -6,4 +6,7 @@ protocol SignInManagerControlDelegate: AnyObject {
     func userIsSignedOut(_ signIn: GenericSignIn)
     func silentSignIn(_ signIn: GenericSignIn)
     func accountMode(_ signIn: GenericSignIn) -> AccountMode?
+    
+    // Show an alert that just neeeds an OK button.
+    func showAlert(_ signIn: GenericSignIn, title: String, message: String?)
 }

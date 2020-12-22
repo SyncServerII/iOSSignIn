@@ -45,6 +45,10 @@ public extension SelectorTargets {
 
 // This class needs to be derived from NSObject because of use of `Network.session().connectionStateCallbacks` below.
 public class SignInManager : NSObject {
+    enum SignInManagerError: Error {
+        case duplicateSignIn(String)
+    }
+    
     /// These must be stored in user defaults-- so that if they delete the app, we lose it, and can start again. Storing both the currentUIDisplayName and userId because the userId (at least for Google) is just a number and not intelligible in the UI.
     // public static var currentUIDisplayName = try! PersistentValue<String>(name: "SignInManager.currentUIDisplayName", storage: .userDefaults)
     
@@ -128,14 +132,15 @@ public class SignInManager : NSObject {
     }
     
     /// At app launch, you must set up all the SignIn's that you'll be presenting to the user. This will call their `appLaunchSetup` method.
-    public func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) {
+    public func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) throws {
 
         // Make sure we don't already have an instance of this signIn
         let name = stringNameForSignIn(signIn)
         let result = allSignIns.filter({stringNameForSignIn($0) == name})
         
-        #warning("Remove this. Change to throwing method?")
-        assert(result.count == 0)
+        guard result.count == 0 else {
+            throw SignInManagerError.duplicateSignIn(name)
+        }
         
         allSignIns.append(signIn)
         signIn.delegate = self
@@ -173,42 +178,17 @@ public class SignInManager : NSObject {
     }
 }
 
-/*
-extension SignInManager : SignInManagerDelegate {
-    public func signInStateChanged(to state: SignInState, for signIn:GenericSignIn) {
-        let priorSignIn = currentSignIn
-        
-        switch state {
-        case .signInStarted:
-            // Must not have any other signin's active when attempting to sign in.
-            assert(currentSignIn == nil)
-            // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
-            currentSignIn = signIn
-            
-        case .signedIn:
-            // This is necessary for silent sign in's.
-            currentSignIn = signIn
-            
-        case .signedOut:
-            currentSignIn = nil
-        }
-        
-        lastStateChangeSignedUserIn = priorSignIn == nil && currentSignIn != nil
-        
-        signInStateChanged.forEachTarget!() { (target, selector, dict) in
-            if let targetObject = target as? NSObject {
-                targetObject.performVoidReturn(selector)
-            }
-        }
-    }
-}
-*/
-
 extension SignInManager: GenericSignInDelegate {
     public func signInStarted(_ signIn: GenericSignIn) {
         // Must not have any other signin's active when attempting to sign in.
-        #warning("Don't use an assert. Find some other way to indicate an error.")
-        assert(currentSignIn == nil)
+        guard currentSignIn == nil else {
+            controlDelegateQueue.async { [weak self] in
+                self?.controlDelegate?.showAlert(signIn, title: "Alert!", message: "Somehow another sign in was active. Please try again.")
+            }
+            currentSignIn = nil
+            return
+        }
+
         // This is necessary to enable the `application(_ application: UIApplication!,...` method to be called during the sign in process.
         currentSignIn = signIn
         
@@ -237,13 +217,15 @@ extension SignInManager: GenericSignInDelegate {
             self.currentSignIn = signIn
             
             self.controlDelegate?.signInCompleted(signIn)
-            
+                        
             if let mode = self.controlDelegate?.accountMode(signIn) {
                 self.signInCompleted(signIn: signIn, mode: mode, autoSignIn: autoSignIn)
+            } else if autoSignIn {
+                // Nil mode returned from `controlDelegate?.accountMode`, but I want to do a check creds if only because I want to allow for a check creds call for Apple sign in-- this drives the periodic credential validity check.
+                self.signInCompleted(signIn: signIn, mode: .signIn, autoSignIn: autoSignIn)
             }
             else {
-                #warning("Why not have an error delegate method and report to caller?")
-                logger.error("ERROR: Could not get AccountMode")
+                logger.error("SignInManager.signInCompleted: ERROR: Could not get AccountMode")
             }
             
             logger.info("Credentials: \(String(describing: self.currentSignIn?.credentials))")
