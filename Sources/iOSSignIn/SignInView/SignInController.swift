@@ -20,18 +20,18 @@ class SignInController {
         }
     }
 
-    let model:SignInModel
+    @ObservedObject var model:SignInModel
     let allSignIns: [SignInDescription]
     
-    init(signIns: [SignInDescription],
-        configuration: UIConfiguration) {
+    init(signIns: [SignInDescription], configuration: UIConfiguration, userAlertModel: UserAlertModel) {
+        
         self.configuration = configuration
         
         allSignIns = signIns.sorted(by: { (s1, s2) -> Bool in
             return s1.signInName < s2.signInName
         })
         
-        model = SignInModel()
+        model = SignInModel(userAlertModel: userAlertModel)
         model.navBarOptions = .none
     }
     
@@ -74,7 +74,7 @@ extension SignInController: SignInDelegate {
     }
     
     func infoButtonTapped() {
-        model.showHelpAlert.toggle()
+        model.userAlertModel.userAlert = .full(title: helpInfo.title, message: helpInfo.message)
     }
     
     func mainScreenIsDisplayed() {

@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import iOSShared
 
 class SignInModel: ObservableObject {
     struct NavBarOption: OptionSet {
@@ -14,14 +15,15 @@ class SignInModel: ObservableObject {
         static let title = NavBarOption(rawValue: 1 << 2)
         static let all:NavBarOption = [.backButton, .infoButton, .title]
     }
-    
-    init() {
-    }
-    
+
     @Published var currentSignIns = [SignInDescription]()
     @Published var screenState: ScreenState = .main
     @Published var includeAcceptInvitation: Bool = false
     @Published var navBarOptions: NavBarOption = .title
     @Published var navBarTitle: String = "Sign into Existing Account"
-    @Published var showHelpAlert: Bool = false
+    @Published var userAlertModel: UserAlertModel
+    
+    init(userAlertModel: UserAlertModel) {
+        self.userAlertModel = userAlertModel
+    }
 }

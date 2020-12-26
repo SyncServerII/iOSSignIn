@@ -37,12 +37,6 @@ struct SignInContainerView: View {
                 Container {
                     self.containedView()
                 }
-                .alert(isPresented: $model.showHelpAlert) {
-                    let text = delegate.helpInfo
-                    return Alert(title: Text(text.title),
-                        message: Text(text.message),
-                        dismissButton: .default(Text("OK")))
-                }
             }
         }
     }
@@ -74,8 +68,3 @@ private struct Container<Content: View>: View {
     }
 }
 
-struct SignInContainer_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInContainerView(model: SignInModel(), delegate: nil)
-    }
-}

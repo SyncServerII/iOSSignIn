@@ -1,5 +1,6 @@
 import SwiftUI
 import ServerShared
+import iOSShared
 
 public protocol SignInServicesHelper: AnyObject {
     var currentCredentials: GenericCredentials? { get }
@@ -35,8 +36,8 @@ public class SignInServices {
     /// `signIns` is the main integration point with iOSBasics. It must be the
     /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
     /// This object is weakly retained.
-    public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, sharingInvitationHelper: SharingInvitationHelper) {
-        controller = SignInController(signIns: descriptions, configuration: configuration)
+    public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, sharingInvitationHelper: SharingInvitationHelper, userAlertModel: UserAlertModel) {
+        controller = SignInController(signIns: descriptions, configuration: configuration, userAlertModel: userAlertModel)
         manager = SignInManager(signIns: signIns)
         manager.controlDelegate = controller
         sharingInvitation = SharingInvitation(appBundleIdentifier: appBundleIdentifier, helper: sharingInvitationHelper)
