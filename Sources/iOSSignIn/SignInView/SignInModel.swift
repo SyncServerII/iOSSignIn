@@ -21,9 +21,9 @@ class SignInModel: ObservableObject {
     @Published var includeAcceptInvitation: Bool = false
     @Published var navBarOptions: NavBarOption = .title
     @Published var navBarTitle: String = "Sign into Existing Account"
-    @Published var userAlertModel: UserAlertModel
+    weak var userAlertDelegate: UserAlertDelegate?
     
-    init(userAlertModel: UserAlertModel) {
-        self.userAlertModel = userAlertModel
+    init(userAlertDelegate: UserAlertDelegate) {
+        self.userAlertDelegate = userAlertDelegate
     }
 }

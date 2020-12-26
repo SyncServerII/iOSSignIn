@@ -23,7 +23,7 @@ class SignInController {
     @ObservedObject var model:SignInModel
     let allSignIns: [SignInDescription]
     
-    init(signIns: [SignInDescription], configuration: UIConfiguration, userAlertModel: UserAlertModel) {
+    init(signIns: [SignInDescription], configuration: UIConfiguration, userAlertDelegate: UserAlertDelegate) {
         
         self.configuration = configuration
         
@@ -31,7 +31,7 @@ class SignInController {
             return s1.signInName < s2.signInName
         })
         
-        model = SignInModel(userAlertModel: userAlertModel)
+        model = SignInModel(userAlertDelegate: userAlertDelegate)
         model.navBarOptions = .none
     }
     
@@ -51,7 +51,7 @@ class SignInController {
             }
         }
         else {
-            #warning("Report error via a delegate.")
+            model.userAlertDelegate?.userAlert = .error(message: "Did not have an invitation.")
             logger.error("ERROR: Did not have invitation")
         }
     }
@@ -74,7 +74,7 @@ extension SignInController: SignInDelegate {
     }
     
     func infoButtonTapped() {
-        model.userAlertModel.userAlert = .full(title: helpInfo.title, message: helpInfo.message)
+        model.userAlertDelegate?.userAlert = .full(title: helpInfo.title, message: helpInfo.message)
     }
     
     func mainScreenIsDisplayed() {
@@ -108,8 +108,8 @@ extension SignInController: SignInDelegate {
 
 extension SignInController: SignInManagerControlDelegate {
     func showAlert(_ signIn: GenericSignIn, title: String, message: String?) {
-        #warning("TODO: Need to report this to user")
-        logger.info("Alert: \(title): \(message)")
+        model.userAlertDelegate?.userAlert = .full(title: title, message: message ?? "")
+        logger.info("Alert: \(title): \(String(describing: message))")
     }
     
     func silentSignIn(_ signIn: GenericSignIn) {

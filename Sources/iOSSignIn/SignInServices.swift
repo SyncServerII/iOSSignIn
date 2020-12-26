@@ -29,20 +29,23 @@ public class SignInServices {
     public var signInView: some View {
         return SignInView(controller: controller, width: controller.configuration.width, height: controller.configuration.height)
     }
+    
+    // So the signInView can show alerts.
+    public weak var userAlertDelegate: UserAlertDelegate?
 
-    private let controller:SignInController
+    private var controller:SignInController!
     private weak var helper: SharingInvitationHelper!
 
     /// `signIns` is the main integration point with iOSBasics. It must be the
     /// `SignIns` object you also pass to the SyncServer constructor with iOSBasics.
     /// This object is weakly retained.
-    public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, sharingInvitationHelper: SharingInvitationHelper, userAlertModel: UserAlertModel) {
-        controller = SignInController(signIns: descriptions, configuration: configuration, userAlertModel: userAlertModel)
+    public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, sharingInvitationHelper: SharingInvitationHelper) {
         manager = SignInManager(signIns: signIns)
         manager.controlDelegate = controller
         sharingInvitation = SharingInvitation(appBundleIdentifier: appBundleIdentifier, helper: sharingInvitationHelper)
         helper = sharingInvitationHelper
         sharingInvitation.delegate = self
+        controller = SignInController(signIns: descriptions, configuration: configuration, userAlertDelegate: self)
     }
     
     /// This is for invitations received via UI-- to allow user to copy/paste an invitation code.
@@ -65,6 +68,17 @@ extension SignInServices: SharingInvitationDelegate {
         else {
             // User first needs to sign in. We're assuming they don't yet have an account on SyncServer. This will enable them to create an account on SyncServer.
             controller.invitation = invite
+        }
+    }
+}
+
+extension SignInServices: UserAlertDelegate {
+    public var userAlert: UserAlertContents? {
+        get {
+            return userAlertDelegate?.userAlert
+        }
+        set(newValue) {
+            userAlertDelegate?.userAlert = newValue
         }
     }
 }
