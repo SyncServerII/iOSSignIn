@@ -41,11 +41,12 @@ public class SignInServices {
     /// This object is weakly retained.
     public init(descriptions: [SignInDescription], configuration: UIConfiguration, appBundleIdentifier: String, signIns: SignInsDelegate, sharingInvitationHelper: SharingInvitationHelper) {
         manager = SignInManager(signIns: signIns)
-        manager.controlDelegate = controller
         sharingInvitation = SharingInvitation(appBundleIdentifier: appBundleIdentifier, helper: sharingInvitationHelper)
         helper = sharingInvitationHelper
         sharingInvitation.delegate = self
+        
         controller = SignInController(signIns: descriptions, configuration: configuration, userAlertDelegate: self)
+        manager.controlDelegate = controller
     }
     
     /// This is for invitations received via UI-- to allow user to copy/paste an invitation code.
