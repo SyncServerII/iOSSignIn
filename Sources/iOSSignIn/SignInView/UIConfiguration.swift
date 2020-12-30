@@ -19,10 +19,13 @@ public struct UIConfiguration {
 
     public static let defaultHelpText = "Creating a new account will give you a new account in the app. Your cloud storage account (e.g., Dropbox) will be used to save the files you create."
     
-    // Default size of main sign-in view. Public so that other views can size themselves to the size of the sign-in view.
+    // Initial size of main sign-in view.
     public let width: CGFloat
     public let height: CGFloat
     
+    public static let defaultWidth:CGFloat = 250
+    public static let defaultHeight:CGFloat = 300
+
     public init(
         signIntoExisting: String = "Sign into Existing Account",
         signingIntoExisting:String = "Signing into Existing Account",
@@ -38,8 +41,8 @@ public struct UIConfiguration {
         
         helpTextWhenCreatingNewAccount:String = Self.defaultHelpText,
         helpTextWhenAcceptingInvitation:String = Self.defaultHelpText,
-        width: CGFloat = 250,
-        height: CGFloat = 300) {
+        width: CGFloat = Self.defaultWidth,
+        height: CGFloat = Self.defaultHeight) {
         
         self.signIntoExisting = signIntoExisting
         self.signingIntoExisting = signingIntoExisting
