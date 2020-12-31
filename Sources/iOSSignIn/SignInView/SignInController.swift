@@ -74,7 +74,7 @@ extension SignInController: SignInDelegate {
     }
     
     func infoButtonTapped() {
-        model.userAlertDelegate?.userAlert = .full(title: helpInfo.title, message: helpInfo.message)
+        model.userAlertDelegate?.userAlert = .titleAndMessage(title: helpInfo.title, message: helpInfo.message)
     }
     
     func mainScreenIsDisplayed() {
@@ -108,7 +108,7 @@ extension SignInController: SignInDelegate {
 
 extension SignInController: SignInManagerControlDelegate {
     func showAlert(_ signIn: GenericSignIn, title: String, message: String?) {
-        model.userAlertDelegate?.userAlert = .full(title: title, message: message ?? "")
+        model.userAlertDelegate?.userAlert = .titleAndMessage(title: title, message: message ?? "")
         logger.info("Alert: \(title): \(String(describing: message))")
     }
     
