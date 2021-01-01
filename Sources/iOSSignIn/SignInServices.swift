@@ -10,9 +10,6 @@ public protocol SignInServicesHelper: AnyObject {
     
     var userType: UserType? { get }
     
-    // The type is optional only for error handling. Plus, I'd like to just have a setter here.
-    var userId: UserId? { get set }
-    
     // Sign the current user out.
     func signUserOut()
 }
