@@ -15,6 +15,7 @@ public protocol GenericSignIn : class {
     var delegate:GenericSignInDelegate? {get set}
         
     /// `userSignedIn`, when true, indicates that the user was signed-in with this GenericSignIn last time, and not signed out.
+    /// Immediately after this returns (and not with some, e.g., async, delay), the `GenericSignIn` must be able to respond with `userIsSignedIn` and `credentials` values indicating whether or not this `GenericSignIn` is signed in.
     func appLaunchSetup(userSignedIn: Bool, withLaunchOptions options:[UIApplication.LaunchOptionsKey : Any]?)
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool
