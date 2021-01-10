@@ -45,7 +45,7 @@ public extension SelectorTargets {
 }
 
 // This class needs to be derived from NSObject because of use of `Network.session().connectionStateCallbacks` below.
-public class SignInManager : NSObject {
+public class SignInManager : NSObject, ObservableObject {
     enum SignInManagerError: Error {
         case duplicateSignIn(String)
     }
