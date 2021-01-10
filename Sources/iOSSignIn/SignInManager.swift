@@ -11,6 +11,7 @@ import UIKit
 import iOSShared
 import Foundation
 import PersistentValue
+import Combine
 
 public protocol SelectorTargets {
     var selectorTargets:[(target: NSObject, action: Selector)] { get set }
@@ -126,9 +127,13 @@ public class SignInManager : NSObject {
         return "\(mirror.subjectType)"
     }
     
-    /// A shorthand-- because it's often used.
-    public var userIsSignedIn:Bool {
-        return currentSignIn?.userIsSignedIn ?? false
+    /// This is @Published because (a) some `GenericSignIn`'s are asynchronous in terms of providing `userIsSignedIn` indication and (b) some client code needs to depend on when the sign in occurs.
+    /// Use `currentSignIn` to get the current sign in if this returns true.
+    @Published public var userIsSignedIn:Bool = false
+    
+    // I'm not updating `userIsSignedIn` when `currentSignIn` is assigned because `currentSignIn` gets updated in `addSignIn`.
+    private func updateUserIsSignedIn(_ signedIn: Bool) {
+        userIsSignedIn = signedIn
     }
     
     /// At app launch, you must set up all the SignIn's that you'll be presenting to the user. This will call their `appLaunchSetup` method.
@@ -215,9 +220,10 @@ extension SignInManager: GenericSignInDelegate {
             
             // This is necessary for silent sign in's.
             self.currentSignIn = signIn
-            
-            self.controlDelegate?.signInCompleted(signIn)
                         
+            self.controlDelegate?.signInCompleted(signIn)
+            self.updateUserIsSignedIn(signIn.userIsSignedIn)
+            
             if let mode = self.controlDelegate?.accountMode(signIn) {
                 self.signInCompleted(signIn: signIn, mode: mode, autoSignIn: autoSignIn)
             } else if autoSignIn {
@@ -227,7 +233,7 @@ extension SignInManager: GenericSignInDelegate {
             else {
                 logger.error("SignInManager.signInCompleted: ERROR: Could not get AccountMode")
             }
-            
+                        
             logger.info("Credentials: \(String(describing: self.currentSignIn?.credentials))")
         }
     }
@@ -238,6 +244,7 @@ extension SignInManager: GenericSignInDelegate {
             self?.controlDelegate?.userIsSignedOut(signIn)
         }
         userIsSignedOut(signIn: signIn)
+        updateUserIsSignedIn(false)
     }
 }
 
