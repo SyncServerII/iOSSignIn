@@ -31,6 +31,15 @@ public protocol GenericSignIn : class {
 
     /// Non-nil if userIsSignedIn is true.
     var credentials:GenericCredentials? { get }
+    
+    /// Update user name for current `GenericCredentials`.
+    /// Optional
+    func updateUserName(_ fullUserName: String)
 
     func signUserOut()
+}
+
+public extension GenericSignIn {
+    func updateUserName(_ fullUserName: String) {
+    }
 }
