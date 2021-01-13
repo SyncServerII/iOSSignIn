@@ -188,6 +188,9 @@ extension SignInController: SignInManagerControlDelegate {
             navBarTitle = configuration.signedIntoExisting
         case .acceptInvitationAndCreateUser:
             navBarTitle = configuration.createdAccountAndAcceptedInvitation
+            
+            // So that if the user signs out, after accepting the invitation, they don't see the "Accept invitation" part of the screen again.
+            invitation = nil
         }
         
         model.navBarTitle = navBarTitle
