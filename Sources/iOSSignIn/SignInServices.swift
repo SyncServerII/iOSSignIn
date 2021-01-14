@@ -49,7 +49,7 @@ public class SignInServices {
     /// This is for invitations received via UI-- to allow user to copy/paste an invitation code.
     /// This drives the sign-in UI to allow the user to sign in. We're assuming they don't yet have an account on SyncServer. This will enable them to create an account on SyncServer.
     public func copyPaste(invitation: Invitation) throws {
-        guard !manager.userIsSignedIn else {
+        guard manager.userIsSignedIn == false else {
             throw SignInServicesError.userSignedIn
         }
         
@@ -59,7 +59,7 @@ public class SignInServices {
 
 extension SignInServices: SharingInvitationDelegate {
     func sharingInvitationReceived(_ sharingInvitation: SharingInvitation, invite: Invitation) {
-        if manager.userIsSignedIn {
+        if let userIsSignedIn = manager.userIsSignedIn, userIsSignedIn {
             // Since the user is signed in, redeeming the new invitation doesn't need any more work in terms of signing-in. So, just pass the invitation along.
             manager.delegate.sharingInvitationForSignedInUser(manager, invitation: invite)
         }

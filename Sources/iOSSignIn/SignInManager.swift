@@ -129,7 +129,7 @@ public class SignInManager : NSObject, ObservableObject {
     
     /// This is @Published because (a) some `GenericSignIn`'s are asynchronous in terms of providing `userIsSignedIn` indication and (b) some client code needs to depend on when the sign in occurs.
     /// Use `currentSignIn` to get the current sign in if this returns true.
-    @Published public var userIsSignedIn:Bool = false
+    @Published public var userIsSignedIn:Bool?
     
     // I'm not updating `userIsSignedIn` when `currentSignIn` is assigned because `currentSignIn` gets updated in `addSignIn`.
     private func updateUserIsSignedIn(_ signedIn: Bool) {
