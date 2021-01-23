@@ -85,6 +85,10 @@ public class SignInManager : NSObject, ObservableObject {
     init(signIns: SignInsDelegate) {
         self.signIns = signIns
         super.init()
+        
+        if SignInManager.currentSignInName.value == nil {
+            userIsSignedIn = false
+        }
 /*
         signInStateChanged.resetTargets!()
         _ = Network.session().connectionStateCallbacks.addTarget!(self, with: #selector(networkChangedState))
