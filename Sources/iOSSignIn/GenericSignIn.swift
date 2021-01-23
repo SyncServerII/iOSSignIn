@@ -42,4 +42,13 @@ public protocol GenericSignIn : class {
 public extension GenericSignIn {
     func updateUserName(_ fullUserName: String) {
     }
+    
+    // The text name of the GenericSignIn class.
+    var stringNameForClass: String {
+        // This gives "GenericSignIn"
+        // String(describing: type(of: currentSignIn!))
+        
+        let mirror = Mirror(reflecting: self)
+        return "\(mirror.subjectType)"
+    }
 }

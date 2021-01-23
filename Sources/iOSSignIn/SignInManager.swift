@@ -86,9 +86,6 @@ public class SignInManager : NSObject, ObservableObject {
         self.signIns = signIns
         super.init()
         
-        if SignInManager.currentSignInName.value == nil {
-            userIsSignedIn = false
-        }
 /*
         signInStateChanged.resetTargets!()
         _ = Network.session().connectionStateCallbacks.addTarget!(self, with: #selector(networkChangedState))
@@ -115,7 +112,7 @@ public class SignInManager : NSObject, ObservableObject {
     public var currentSignIn:GenericSignIn? {
         didSet {
             if let currentSignIn = currentSignIn {
-                Self.currentSignInName.value = stringNameForSignIn(currentSignIn)
+                Self.currentSignInName.value = currentSignIn.stringNameForClass
             }
             else {
                 Self.currentSignInName.value = nil
@@ -123,12 +120,9 @@ public class SignInManager : NSObject, ObservableObject {
         }
     }
     
-    fileprivate func stringNameForSignIn(_ signIn: GenericSignIn) -> String {
-        // This gives "GenericSignIn"
-        // String(describing: type(of: currentSignIn!))
-        
-        let mirror = Mirror(reflecting: signIn)
-        return "\(mirror.subjectType)"
+    /// In a sharing extension, this can be non-nil and yet `userIsSignedIn` can be false-- if the sign in type doesn't support sharing extension use. (e.g., currently for Facebook-- https://github.com/facebook/facebook-ios-sdk/issues/1607)
+    public var currentSignInClassName: String? {
+        return Self.currentSignInName.value
     }
     
     /// This is @Published because (a) some `GenericSignIn`'s are asynchronous in terms of providing `userIsSignedIn` indication and (b) some client code needs to depend on when the sign in occurs.
@@ -141,11 +135,31 @@ public class SignInManager : NSObject, ObservableObject {
     }
     
     /// At app launch, you must set up all the SignIn's that you'll be presenting to the user. This will call their `appLaunchSetup` method.
-    public func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) throws {
+    public func addSignIns(_ signIns:[GenericSignIn], launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) throws {
+        for signIn in signIns {
+            try addSignIn(signIn, launchOptions: options)
+        }
+        
+        // Two cases in which I need to set `userIsSignedIn` to false.
+        // First: If there was no `currentSignInName`. i.e., no user signed in at app launch.
+        // Second: A user was signed in at app launch, but the sign in didn't take responsiblity. This can happen if a sign in isn't being used in a sharing extension, for example.
+        
+        if currentSignInClassName == nil {
+            userIsSignedIn = false
+        }
+        else if let currentSignInName = currentSignInClassName {
+            let signInNameInDescriptions = allSignIns.first(where: {$0.stringNameForClass == currentSignInName})
+            if signInNameInDescriptions == nil {
+                userIsSignedIn = false
+            }
+        }
+    }
+    
+    func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) throws {
 
         // Make sure we don't already have an instance of this signIn
-        let name = stringNameForSignIn(signIn)
-        let result = allSignIns.filter({stringNameForSignIn($0) == name})
+        let name = signIn.stringNameForClass
+        let result = allSignIns.filter({$0.stringNameForClass == name})
         
         guard result.count == 0 else {
             throw SignInManagerError.duplicateSignIn(name)
@@ -176,7 +190,7 @@ public class SignInManager : NSObject, ObservableObject {
     public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
         for signIn in allSignIns {
-            if SignInManager.currentSignInName.value == stringNameForSignIn(signIn) {
+            if SignInManager.currentSignInName.value == signIn.stringNameForClass {
                 return signIn.application(app, open: url, options: options)
             }
         }
