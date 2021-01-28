@@ -22,8 +22,8 @@ let package = Package(
     // Conditional dependencies available in Swift 5.3:
     // https://github.com/apple/swift-evolution/blob/master/proposals/0273-swiftpm-conditional-target-dependencies.md
     dependencies: [
-        .package(url: "https://github.com/SyncServerII/ServerShared.git", .branch("master")),
-        .package(url: "https://github.com/SyncServerII/iOSShared.git", .branch("master")),
+        .package(url: "https://github.com/SyncServerII/ServerShared.git", from: "0.0.4"),
+        .package(url: "https://github.com/SyncServerII/iOSShared.git", from: "0.0.2"),
 
         //.package(path: "../ServerShared"),
         
@@ -31,7 +31,7 @@ let package = Package(
         // https://github.com/dropbox/SwiftyDropbox/issues/252
         // .package(url: "https://github.com/dropbox/SwiftyDropbox.git", .upToNextMajor(from: "5.1.0")),
         
-        .package(url: "https://github.com/crspybits/PersistentValue.git", .branch("master")),
+        .package(url: "https://github.com/crspybits/PersistentValue.git", from: "0.0.7"),
     ],
     
     targets: [

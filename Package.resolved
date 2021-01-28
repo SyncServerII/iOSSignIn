@@ -5,9 +5,9 @@
         "package": "iOSShared",
         "repositoryURL": "https://github.com/SyncServerII/iOSShared.git",
         "state": {
-          "branch": "master",
-          "revision": "9897d4513ddad6e9f05fe17d11fade790fabd22f",
-          "version": null
+          "branch": null,
+          "revision": "d610a64a56dad57bfa8fa9c21daa19f135e4f2fd",
+          "version": "0.0.2"
         }
       },
       {
@@ -15,26 +15,26 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
         "state": {
           "branch": null,
-          "revision": "654d52d30f3dd4592e944c3e0bccb53178c992f6",
-          "version": "4.2.1"
+          "revision": "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
+          "version": "3.2.1"
         }
       },
       {
         "package": "PersistentValue",
         "repositoryURL": "https://github.com/crspybits/PersistentValue.git",
         "state": {
-          "branch": "master",
-          "revision": "74adb41533af3e1205faf7f1852f2f7e6693f8c4",
-          "version": null
+          "branch": null,
+          "revision": "995657d86a2101abfc1bb72a2c631d8433707df0",
+          "version": "0.6.0"
         }
       },
       {
         "package": "ServerShared",
         "repositoryURL": "https://github.com/SyncServerII/ServerShared.git",
         "state": {
-          "branch": "master",
-          "revision": "2cb3610a5ea7fe30a7d736e01087a41d77a169dd",
-          "version": null
+          "branch": null,
+          "revision": "6c725c50cdb575c183943dcfcdb7394390a5e933",
+          "version": "0.0.4"
         }
       },
       {
