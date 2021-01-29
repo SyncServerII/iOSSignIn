@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
         "state": {
           "branch": null,
-          "revision": "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
-          "version": "3.2.1"
+          "revision": "654d52d30f3dd4592e944c3e0bccb53178c992f6",
+          "version": "4.2.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/crspybits/PersistentValue.git",
         "state": {
           "branch": null,
-          "revision": "995657d86a2101abfc1bb72a2c631d8433707df0",
-          "version": "0.6.0"
+          "revision": "ede36cf07a63eec41f5cf100cd907d87e442843a",
+          "version": "0.7.1"
         }
       },
       {

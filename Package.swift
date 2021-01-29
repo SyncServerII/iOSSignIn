@@ -31,7 +31,7 @@ let package = Package(
         // https://github.com/dropbox/SwiftyDropbox/issues/252
         // .package(url: "https://github.com/dropbox/SwiftyDropbox.git", .upToNextMajor(from: "5.1.0")),
         
-        .package(url: "https://github.com/crspybits/PersistentValue.git", from: "0.0.7"),
+        .package(url: "https://github.com/crspybits/PersistentValue.git", from: "0.7.1"),
     ],
     
     targets: [
