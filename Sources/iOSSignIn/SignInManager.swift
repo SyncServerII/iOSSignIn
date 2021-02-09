@@ -46,6 +46,9 @@ public extension SelectorTargets {
 
 // This class needs to be derived from NSObject because of use of `Network.session().connectionStateCallbacks` below.
 public class SignInManager : NSObject, ObservableObject {
+    let refreshInterval: TimeInterval = 60 * 10 // 10 minutes
+    var refreshTimer: Timer?
+    
     enum SignInManagerError: Error {
         case duplicateSignIn(String)
     }
@@ -198,6 +201,32 @@ public class SignInManager : NSObject, ObservableObject {
         // 10/1/17; Up until today, I had this assert here. For some reason, I was assuming that if I got a `open url` call, the user *had* to be signed in. But this is incorrect. For example, I could get a call for a sharing invitation.
         // assert(false)
         return false
+    }
+    
+    /// Starts an auto-refresh mechanism, to refresh credentials periodically while the app is in the foreground.
+    // Solution to this problem: https://github.com/SyncServerII/iOSBasics/issues/3
+    public func sceneWillEnterForeground(_ scene: UIScene) {
+        if let _ = refreshTimer {
+            return
+        }
+        
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
+            self?.refreshCredentials()
+        }
+        
+        refreshCredentials()
+    }
+    
+    func refreshCredentials() {
+        logger.debug("Refreshing credentials")
+        currentSignIn?.credentials?.refreshCredentials { error in
+            if let error = error {
+                logger.error("\(error)")
+            }
+            else  {
+                logger.debug("Success refreshing credentials!")
+            }
+        }
     }
 }
 
