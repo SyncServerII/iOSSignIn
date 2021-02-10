@@ -156,6 +156,8 @@ public class SignInManager : NSObject, ObservableObject {
                 userIsSignedIn = false
             }
         }
+        
+        startPeriodicCredentialsRefresh()
     }
     
     func addSignIn(_ signIn:GenericSignIn, launchOptions options: [UIApplication.LaunchOptionsKey: Any]?) throws {
@@ -203,9 +205,9 @@ public class SignInManager : NSObject, ObservableObject {
         return false
     }
     
-    /// Starts an auto-refresh mechanism, to refresh credentials periodically while the app is in the foreground.
+    // Starts an auto-refresh mechanism, to refresh credentials periodically while the app is in the foreground.
     // Solution to this problem: https://github.com/SyncServerII/iOSBasics/issues/3
-    public func sceneWillEnterForeground(_ scene: UIScene) {
+    func startPeriodicCredentialsRefresh() {
         if let _ = refreshTimer {
             return
         }
@@ -213,8 +215,8 @@ public class SignInManager : NSObject, ObservableObject {
         refreshTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
             self?.refreshCredentials()
         }
-        
-        refreshCredentials()
+
+        // Not going to do a `refreshCredentials`-- assuming this will be done by specific credentials on app start.
     }
     
     func refreshCredentials() {
