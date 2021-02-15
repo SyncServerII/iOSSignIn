@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SyncServerII/iOSShared.git",
         "state": {
           "branch": null,
-          "revision": "d610a64a56dad57bfa8fa9c21daa19f135e4f2fd",
-          "version": "0.0.2"
+          "revision": "631db3a4c59d52bce40a32326e416fc0f8c0270c",
+          "version": "0.2.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SyncServerII/ServerShared.git",
         "state": {
           "branch": null,
-          "revision": "6c725c50cdb575c183943dcfcdb7394390a5e933",
-          "version": "0.0.4"
+          "revision": "e193b9e79351a2f4a68af0cd784fde84e1032a77",
+          "version": "0.1.0"
         }
       },
       {
@@ -56,12 +56,30 @@
         }
       },
       {
+        "package": "swift-log-file",
+        "repositoryURL": "https://github.com/crspybits/swift-log-file.git",
+        "state": {
+          "branch": null,
+          "revision": "aa94b38bf88c7d9cbc87ceafcdffadaffbc2bffa",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "SwiftyUserDefaults",
         "repositoryURL": "https://github.com/sunshinejr/SwiftyUserDefaults.git",
         "state": {
           "branch": null,
           "revision": "6c65d48296880db837afbaf28198392e416e58ef",
           "version": "5.1.0"
+        }
+      },
+      {
+        "package": "XCGLogger",
+        "repositoryURL": "https://github.com/DaveWoodCom/XCGLogger.git",
+        "state": {
+          "branch": null,
+          "revision": "a9c4667b247928a29bdd41be2ec2c8d304215a54",
+          "version": "7.0.1"
         }
       }
     ]

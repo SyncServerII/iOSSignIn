@@ -23,7 +23,7 @@ class SignInController {
     @ObservedObject var model:SignInModel
     let allSignIns: [SignInDescription]
     
-    init(signIns: [SignInDescription], configuration: UIConfiguration, userAlertDelegate: UserAlertDelegate) {
+    init(signIns: [SignInDescription], configuration: UIConfiguration, alertyDelegate: AlertyDelegate) {
         
         self.configuration = configuration
         
@@ -31,7 +31,7 @@ class SignInController {
             return s1.signInName < s2.signInName
         })
         
-        model = SignInModel(userAlertDelegate: userAlertDelegate)
+        model = SignInModel(alertyDelegate: alertyDelegate)
         model.navBarOptions = .none
     }
     
@@ -51,7 +51,7 @@ class SignInController {
             }
         }
         else {
-            model.userAlertDelegate?.userAlert = .error(message: "Did not have an invitation.")
+            model.alertyDelegate?.showAlert(AlertyHelper.error(message: "Did not have an invitation."))
             logger.error("ERROR: Did not have invitation")
         }
     }
@@ -74,7 +74,7 @@ extension SignInController: SignInDelegate {
     }
     
     func infoButtonTapped() {
-        model.userAlertDelegate?.userAlert = .titleAndMessage(title: helpInfo.title, message: helpInfo.message)
+        model.alertyDelegate?.showAlert(AlertyHelper.alert(title: helpInfo.title, message: helpInfo.message))
     }
     
     func mainScreenIsDisplayed() {
@@ -108,7 +108,7 @@ extension SignInController: SignInDelegate {
 
 extension SignInController: SignInManagerControlDelegate {
     func showAlert(_ signIn: GenericSignIn, title: String, message: String?) {
-        model.userAlertDelegate?.userAlert = .titleAndMessage(title: title, message: message ?? "")
+        model.alertyDelegate?.showAlert(AlertyHelper.alert(title: title, message: message ?? ""))
         logger.info("Alert: \(title): \(String(describing: message))")
     }
     

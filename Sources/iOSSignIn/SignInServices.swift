@@ -28,7 +28,7 @@ public class SignInServices {
     }
     
     // So the signInView can show alerts.
-    public weak var userAlertDelegate: UserAlertDelegate?
+    public weak var userEvents:AlertyPublisher?
 
     private var controller:SignInController!
     private weak var helper: SharingInvitationHelper!
@@ -42,7 +42,7 @@ public class SignInServices {
         helper = sharingInvitationHelper
         sharingInvitation.delegate = self
         
-        controller = SignInController(signIns: descriptions, configuration: configuration, userAlertDelegate: self)
+        controller = SignInController(signIns: descriptions, configuration: configuration, alertyDelegate: self)
         manager.controlDelegate = controller
     }
     
@@ -70,13 +70,13 @@ extension SignInServices: SharingInvitationDelegate {
     }
 }
 
-extension SignInServices: UserAlertDelegate {
-    public var userAlert: UserAlertContents? {
-        get {
-            return userAlertDelegate?.userAlert
+extension SignInServices: AlertyDelegate {
+    public func showAlert(_ alert: SwiftUI.Alert?) {
+        guard let alert = alert else {
+            logger.warning("No alert to show.")
+            return
         }
-        set(newValue) {
-            userAlertDelegate?.userAlert = newValue
-        }
+        
+        userEvents?.alerty.send(AlertyContents(alert))
     }
 }
