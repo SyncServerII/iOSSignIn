@@ -76,8 +76,14 @@ public class SharingInvitation {
                             switch result {
                             case .failure(let error):
                                 logger.error("\(error)")
+                                
                                 DispatchQueue.main.async {
-                                    self.helper.sharingInvitationUserAlert(self, title: "Alert!", message: "There was an error contacting the server for the sharing information.")
+                                    if let networkError = error as? Errors, networkError.networkIsNotReachable {
+                                        self.helper.sharingInvitationUserAlert(self, title: "Alert!", message: "No network connection.")
+                                    }
+                                    else {
+                                        self.helper.sharingInvitationUserAlert(self, title: "Alert!", message: "There was an error contacting the server for the sharing information.")
+                                    }
                                 }
                             case .success(let info):
                                 switch info {

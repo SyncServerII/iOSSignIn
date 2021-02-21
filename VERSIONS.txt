@@ -1,7 +1,8 @@
 iOSSignIn
 
-Version
-	Improve output for refreshing credentials-- now giving no output when there are no credentials. i.e., when the user is signed out.
+Version 0.3.0 (2/20/21)
+	* Improve output for refreshing credentials-- now giving no output when there are no credentials. i.e., when the user is signed out.
+	* Improve error messaging.
 	
 Version 0.2.0 (2/14/21)
 	User alert updates from iOSShared.
