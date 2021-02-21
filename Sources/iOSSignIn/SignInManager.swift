@@ -220,8 +220,13 @@ public class SignInManager : NSObject, ObservableObject {
     }
     
     func refreshCredentials() {
+        guard let credentials = currentSignIn?.credentials else {
+            return
+        }
+        
         logger.debug("Refreshing credentials")
-        currentSignIn?.credentials?.refreshCredentials { error in
+        
+        credentials.refreshCredentials { error in
             if let error = error {
                 logger.error("\(error)")
             }
