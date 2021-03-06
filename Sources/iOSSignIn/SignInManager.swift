@@ -111,11 +111,15 @@ public class SignInManager : NSObject, ObservableObject {
     
     private(set) var allSignIns = [GenericSignIn]()
     
+    private func nameFor(signIn:GenericSignIn) -> String {
+        return signIn.stringNameForClass
+    }
+    
     /// Set this to establish the current SignIn mechanism in use in the app.
     public var currentSignIn:GenericSignIn? {
         didSet {
             if let currentSignIn = currentSignIn {
-                Self.currentSignInName.value = currentSignIn.stringNameForClass
+                Self.currentSignInName.value = nameFor(signIn: currentSignIn)
             }
             else {
                 Self.currentSignInName.value = nil
@@ -292,13 +296,18 @@ extension SignInManager: GenericSignInDelegate {
         }
     }
     
+    // Only actually does the signout if this signIn is the one signed in.
     public func userIsSignedOut(_ signIn: GenericSignIn) {
-        currentSignIn = nil
-        controlDelegateQueue.async { [weak self] in
-            self?.controlDelegate?.userIsSignedOut(signIn)
+        if let currentSignIn = currentSignIn,
+            nameFor(signIn: signIn) == nameFor(signIn: currentSignIn) {
+            
+            self.currentSignIn = nil
+            controlDelegateQueue.async { [weak self] in
+                self?.controlDelegate?.userIsSignedOut(signIn)
+            }
+            userIsSignedOut(signIn: signIn)
+            updateUserIsSignedIn(false)
         }
-        userIsSignedOut(signIn: signIn)
-        updateUserIsSignedIn(false)
     }
 }
 
