@@ -124,7 +124,7 @@ extension SignInController: SignInManagerControlDelegate {
         // Transitional state. User has tapped sign in button -- they want to create an account or to sign into an existing account.
         
         guard let accountMode = accountMode else {
-            logger.error("signInStarted: ERROR: Could not get AccountMode")
+            logger.debug("signInStarted: ERROR: Could not get AccountMode")
             return
         }
         
@@ -147,7 +147,7 @@ extension SignInController: SignInManagerControlDelegate {
         let navBarTitle: String
         
         guard let accountMode = accountMode else {
-            logger.error("signInCancelled: ERROR: Could not get AccountMode")
+            logger.debug("signInCancelled: ERROR: Could not get AccountMode")
             return
         }
         
@@ -177,7 +177,7 @@ extension SignInController: SignInManagerControlDelegate {
         let navBarTitle: String
         
         guard let accountMode = accountMode else {
-            logger.error("SignInController.signInCompleted: ERROR: Could not get AccountMode")
+            logger.debug("SignInController.signInCompleted: ERROR: Could not get AccountMode")
             return
         }
         

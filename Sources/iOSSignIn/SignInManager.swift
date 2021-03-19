@@ -289,7 +289,7 @@ extension SignInManager: GenericSignInDelegate {
                 self.signInCompleted(signIn: signIn, mode: .signIn, autoSignIn: autoSignIn)
             }
             else {
-                logger.error("SignInManager.signInCompleted: ERROR: Could not get AccountMode")
+                logger.debug("SignInManager.signInCompleted: ERROR: Could not get AccountMode")
             }
                         
             logger.info("Credentials: \(String(describing: self.currentSignIn?.credentials))")
