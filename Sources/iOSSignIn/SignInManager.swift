@@ -209,9 +209,15 @@ public class SignInManager : NSObject, ObservableObject {
         return false
     }
     
+    public func application(changes state: AppState) {
+        if state == .foreground {
+            refreshCredentials()
+        }
+    }
+    
     // Starts an auto-refresh mechanism, to refresh credentials periodically while the app is in the foreground.
     // Solution to this problem: https://github.com/SyncServerII/iOSBasics/issues/3
-    func startPeriodicCredentialsRefresh() {
+    private func startPeriodicCredentialsRefresh() {
         if let _ = refreshTimer {
             return
         }

@@ -1,5 +1,8 @@
 iOSSignIn
 
+Version 0.4.0 (4/3/21)
+	* Added application change state method. So that credentials can be refreshed when (a) app comes into foreground, and (b) when app starts.
+    
 Version 0.3.2 (3/19/21)
 	* Removed unuseful error logging.
 	
