@@ -37,11 +37,11 @@ class SignInController {
     
     private func allowUserToAcceptInvitation() {
         if let invitation = invitation {
-            accountMode = .acceptInvitationAndCreateUser(invitation: invitation)
+            accountMode = .acceptInvitation(invitation: invitation)
             
             model.screenState = .list
             model.navBarOptions = [.backButton, .title, .infoButton]
-            model.navBarTitle = configuration.createAccountAndAcceptInvitation
+            model.navBarTitle = configuration.acceptInvitation
             
             if invitation.allowsSocialSharing {
                 model.currentSignIns = allSignIns
@@ -134,8 +134,8 @@ extension SignInController: SignInManagerControlDelegate {
             navBarTitle = configuration.creatingNewAccount
         case .signIn:
             navBarTitle = configuration.signingIntoExisting
-        case .acceptInvitationAndCreateUser:
-            navBarTitle = configuration.creatingAccountAndAcceptingInvitation
+        case .acceptInvitation:
+            navBarTitle = configuration.acceptingInvitation
         }
         
         model.currentSignIns = allSignIns.filter{ $0.signInName == signIn.signInName }
@@ -158,8 +158,8 @@ extension SignInController: SignInManagerControlDelegate {
         case .signIn:
             navBarTitle = configuration.signIntoExisting
             model.currentSignIns = allSignIns
-        case .acceptInvitationAndCreateUser(let invitation):
-            navBarTitle = configuration.createAccountAndAcceptInvitation
+        case .acceptInvitation(let invitation):
+            navBarTitle = configuration.acceptInvitation
             if invitation.allowsSocialSharing {
                 model.currentSignIns = allSignIns
             }
@@ -186,8 +186,8 @@ extension SignInController: SignInManagerControlDelegate {
             navBarTitle = configuration.createdNewAccount
         case .signIn:
             navBarTitle = configuration.signedIntoExisting
-        case .acceptInvitationAndCreateUser:
-            navBarTitle = configuration.createdAccountAndAcceptedInvitation
+        case .acceptInvitation:
+            navBarTitle = configuration.acceptedInvitation
             
             // So that if the user signs out, after accepting the invitation, they don't see the "Accept invitation" part of the screen again.
             invitation = nil

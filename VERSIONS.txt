@@ -1,5 +1,8 @@
 iOSSignIn
 
+Version 0.4.1 (4/16/21)
+	* Accommodating the fact that a sharing invitation accepted with no user signed in can be accepted for an existing Neebla account or while creating a new Neebla account.
+	
 Version 0.4.0 (4/3/21)
 	* Added application change state method. So that credentials can be refreshed when (a) app comes into foreground, and (b) when app starts.
     

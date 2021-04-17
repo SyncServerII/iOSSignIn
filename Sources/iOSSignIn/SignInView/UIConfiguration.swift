@@ -10,9 +10,9 @@ public struct UIConfiguration {
     let creatingNewAccount:String
     let createdNewAccount:String
     
-    let createAccountAndAcceptInvitation:String
-    let creatingAccountAndAcceptingInvitation:String
-    let createdAccountAndAcceptedInvitation:String
+    let acceptInvitation:String
+    let acceptingInvitation:String
+    let acceptedInvitation:String
     
     let helpTextWhenCreatingNewAccount:String
     let helpTextWhenAcceptingInvitation:String
@@ -35,9 +35,9 @@ public struct UIConfiguration {
         creatingNewAccount:String = "Creating New Account",
         createdNewAccount:String = "Created New Account",
         
-        createAccountAndAcceptInvitation:String = "Create New Sharing Account",
-        creatingAccountAndAcceptingInvitation:String = "Creating New Sharing Account",
-        createdAccountAndAcceptedInvitation:String = "Created New Sharing Account",
+        acceptInvitation:String = "Accept Invitation",
+        acceptingInvitation:String = "Accepting Invitation",
+        acceptedInvitation:String = "Accepted Invitation",
         
         helpTextWhenCreatingNewAccount:String = Self.defaultHelpText,
         helpTextWhenAcceptingInvitation:String = Self.defaultHelpText,
@@ -52,9 +52,9 @@ public struct UIConfiguration {
         self.creatingNewAccount = creatingNewAccount
         self.createdNewAccount = createdNewAccount
         
-        self.createAccountAndAcceptInvitation = createAccountAndAcceptInvitation
-        self.creatingAccountAndAcceptingInvitation = creatingAccountAndAcceptingInvitation
-        self.createdAccountAndAcceptedInvitation = createdAccountAndAcceptedInvitation
+        self.acceptInvitation = acceptInvitation
+        self.acceptingInvitation = acceptingInvitation
+        self.acceptedInvitation = acceptedInvitation
         
         self.helpTextWhenCreatingNewAccount = helpTextWhenCreatingNewAccount
         self.helpTextWhenAcceptingInvitation = helpTextWhenAcceptingInvitation

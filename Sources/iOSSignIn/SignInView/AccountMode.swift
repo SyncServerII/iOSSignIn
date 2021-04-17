@@ -3,5 +3,7 @@ import ServerShared
 public enum AccountMode {
     case signIn
     case createOwningUser
-    case acceptInvitationAndCreateUser(invitation: Invitation)
+    
+    // May or may not involve creating a user.
+    case acceptInvitation(invitation: Invitation)
 }
