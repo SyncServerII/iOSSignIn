@@ -229,20 +229,29 @@ public class SignInManager : NSObject, ObservableObject {
         // Not going to do a `refreshCredentials`-- assuming this will be done by specific credentials on app start.
     }
     
+    // See below.
+    private var credentials: GenericCredentials!
+    
     func refreshCredentials() {
         guard let credentials = currentSignIn?.credentials else {
             return
         }
         
+        // The `refreshCredentials` call below is likely async, and the credentials returned above may not be retained by the `currentSignIn`. We need to retain the credentials, or the refresh below doesn't complete.
+        self.credentials = credentials
+        
         logger.debug("Refreshing credentials")
         
-        credentials.refreshCredentials { error in
+        self.credentials.refreshCredentials { [weak self] error in
             if let error = error {
                 logger.error("\(error)")
             }
             else  {
                 logger.debug("Success refreshing credentials!")
             }
+            
+            // Not needed any more.
+            self?.credentials = nil
         }
     }
 }
