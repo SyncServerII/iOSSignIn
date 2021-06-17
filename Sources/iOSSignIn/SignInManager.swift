@@ -240,14 +240,14 @@ public class SignInManager : NSObject, ObservableObject {
         // The `refreshCredentials` call below is likely async, and the credentials returned above may not be retained by the `currentSignIn`. We need to retain the credentials, or the refresh below doesn't complete.
         self.credentials = credentials
         
-        logger.debug("Refreshing credentials")
+        logger.notice("Refreshing credentials")
         
         self.credentials.refreshCredentials { [weak self] error in
             if let error = error {
-                logger.error("\(error)")
+                logger.error("refreshCredentials: \(error)")
             }
             else  {
-                logger.debug("Success refreshing credentials!")
+                logger.notice("Success refreshing credentials!")
             }
             
             // Not needed any more.
