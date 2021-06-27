@@ -9,4 +9,7 @@ public protocol GenericCredentialsBasics {
 
     /// A name suitable for identifying the user via the UI. If available this should be the users email. Otherwise, it could be the same as the username.
     var uiDisplayName:String? { get }
+    
+    /// The users email address. Every effort should be made to get this. We need to store it on the backend in case needed to contact users.
+    var emailAddress: String! { get }
 }

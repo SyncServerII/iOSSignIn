@@ -1,5 +1,8 @@
 iOSSignIn
 
+Version 0.5.0 (6/26/21)
+    * Added emailAddress to credentials.
+
 Version 0.4.3 (6/16/21)
 	* Added some logging.
 	
