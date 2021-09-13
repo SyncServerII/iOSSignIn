@@ -2,6 +2,7 @@ import Foundation
 
 // Delegate adopted by GenericSignIn's. E.g., by iOSDropbox or iOSFacebook.
 public protocol GenericSignInDelegate: AnyObject {
+    func accountMode(_ signIn: GenericSignIn) -> AccountMode?
     func signInStarted(_ signIn: GenericSignIn)
     func signInCancelled(_ signIn: GenericSignIn)
     func haveCredentials(_ signIn: GenericSignIn, credentials: GenericCredentials)

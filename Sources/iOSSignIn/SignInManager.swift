@@ -257,6 +257,10 @@ public class SignInManager : NSObject, ObservableObject {
 }
 
 extension SignInManager: GenericSignInDelegate {
+    public func accountMode(_ signIn: GenericSignIn) -> AccountMode? {
+        return controlDelegate?.accountMode(signIn)
+    }
+    
     public func signInStarted(_ signIn: GenericSignIn) {
         // Must not have any other signin's active when attempting to sign in.
         guard currentSignIn == nil else {
